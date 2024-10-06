@@ -1,0 +1,11 @@
+#version: openapi
+
+-- schema.yaml --
+components:
+  schemas:
+    DateTime:
+        type: string
+        format: date-time
+
+-- out/decode/extract --
+#DateTime: string

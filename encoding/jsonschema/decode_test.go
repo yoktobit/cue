@@ -58,7 +58,9 @@ import (
 // The #noverify tag in the txtar header causes verification and
 // instance tests to be skipped.
 //
-// The #openapi tag in the txtar header enables OpenAPI extraction mode.
+// The #version: <version> tag selects the default schema version URI to use.
+// As a special case, when this is "openapi", OpenAPI extraction
+// mode is enabled.
 func TestDecode(t *testing.T) {
 	test := cuetxtar.TxTarTest{
 		Root:   "./testdata/txtar",
@@ -68,19 +70,29 @@ func TestDecode(t *testing.T) {
 	test.Run(t, func(t *cuetxtar.Test) {
 		cfg := &jsonschema.Config{}
 
-		if t.HasTag("openapi") {
-			cfg.Root = "#/components/schemas/"
-			cfg.Map = func(p token.Pos, a []string) ([]ast.Label, error) {
-				// Just for testing: does not validate the path.
-				return []ast.Label{ast.NewIdent("#" + a[len(a)-1])}, nil
+		if t.HasTag("brokenInV2") && t.M.Name() == "v2" {
+			t.Skip("skipping because test is broken under the v2 evaluator")
+		}
+
+		if versStr, ok := t.Value("version"); ok {
+			if versStr == "openapi" {
+				// OpenAPI doesn't have a JSON Schema URI so it gets a special case.
+				cfg.DefaultVersion = jsonschema.VersionOpenAPI
+				cfg.Root = "#/components/schemas/"
+				cfg.StrictKeywords = true // OpenAPI always uses strict keywords
+				cfg.Map = func(p token.Pos, a []string) ([]ast.Label, error) {
+					// Just for testing: does not validate the path.
+					return []ast.Label{ast.NewIdent("#" + a[len(a)-1])}, nil
+				}
+			} else {
+				vers, err := jsonschema.ParseVersion(versStr)
+				qt.Assert(t, qt.IsNil(err))
+				cfg.DefaultVersion = vers
 			}
 		}
-		if versStr, ok := t.Value("version"); ok {
-			vers, err := jsonschema.ParseVersion(versStr)
-			qt.Assert(t, qt.IsNil(err))
-			cfg.DefaultVersion = vers
-		}
 		cfg.Strict = t.HasTag("strict")
+		cfg.StrictKeywords = cfg.StrictKeywords || t.HasTag("strictKeywords")
+		cfg.StrictFeatures = t.HasTag("strictFeatures")
 
 		ctx := t.CueContext()
 
@@ -119,7 +131,7 @@ func TestDecode(t *testing.T) {
 		// Verify that the generated CUE compiles.
 		schemav := ctx.CompileBytes(b, cue.Filename("generated.cue"))
 		if err := schemav.Err(); err != nil {
-			t.Fatal(errors.Details(err, nil))
+			t.Fatal(errors.Details(err, nil), qt.Commentf("generated code: %q", b))
 		}
 		testEntries, err := fs.ReadDir(fsys, "test")
 		if err != nil {
@@ -168,7 +180,7 @@ func TestDecode(t *testing.T) {
 				}
 			} else {
 				if err := rv.Err(); err != nil {
-					t.Fatalf("test %v unexpectedly fails", file)
+					t.Fatalf("test %v unexpectedly fails: %v", file, errors.Details(err, nil))
 				}
 			}
 		}
@@ -204,9 +216,9 @@ properties: x: $ref: "https://something.test/foo#/definitions/blah"
 `)
 	var calls []string
 	expr, err := jsonschema.Extract(v, &jsonschema.Config{
-		MapURL: func(u *url.URL) (string, error) {
+		MapURL: func(u *url.URL) (string, cue.Path, error) {
 			calls = append(calls, u.String())
-			return "other.test/something:blah", nil
+			return "other.test/something:blah", cue.ParsePath("#Foo.bar"), nil
 		},
 	})
 	qt.Assert(t, qt.IsNil(err))
@@ -218,7 +230,7 @@ properties: x: $ref: "https://something.test/foo#/definitions/blah"
 	qt.Assert(t, qt.Equals(string(b), `
 import "other.test/something:blah"
 
-x?: blah.#blah
+x?: blah.#Foo.bar.#blah
 ...
 `[1:]))
 }
@@ -232,8 +244,8 @@ properties: {
 }
 `, cue.Filename("foo.cue"))
 	_, err := jsonschema.Extract(v, &jsonschema.Config{
-		MapURL: func(u *url.URL) (string, error) {
-			return "", fmt.Errorf("some error")
+		MapURL: func(u *url.URL) (string, cue.Path, error) {
+			return "", cue.Path{}, fmt.Errorf("some error")
 		},
 	})
 	qt.Assert(t, qt.Equals(errors.Details(err, nil), `

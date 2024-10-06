@@ -2,7 +2,6 @@ package externaltest
 
 import (
 	"bytes"
-	"encoding/json"
 	stdjson "encoding/json"
 	"fmt"
 	"os"
@@ -12,30 +11,42 @@ import (
 	"cuelang.org/go/cue/cuecontext"
 	"cuelang.org/go/cue/interpreter/embed"
 	"cuelang.org/go/cue/load"
+	"cuelang.org/go/cue/token"
 )
 
 type Schema struct {
+	location
 	Description string             `json:"description"`
 	Comment     string             `json:"comment,omitempty"`
 	Schema      stdjson.RawMessage `json:"schema"`
-	Skip        string             `json:"skip,omitempty"`
+	Skip        Skip               `json:"skip,omitempty"`
 	Tests       []*Test            `json:"tests"`
 }
 
 type Test struct {
+	location
 	Description string             `json:"description"`
 	Comment     string             `json:"comment,omitempty"`
 	Data        stdjson.RawMessage `json:"data"`
 	Valid       bool               `json:"valid"`
-	Skip        string             `json:"skip,omitempty"`
+	Skip        Skip               `json:"skip,omitempty"`
 }
 
-func ParseTestData(data []byte) ([]*Schema, error) {
-	var schemas []*Schema
-	if err := json.Unmarshal(data, &schemas); err != nil {
-		return nil, err
-	}
-	return schemas, nil
+// Skip records information about whether a given schema
+// or test will be skipped when testing. If not present,
+// the test will be expected to pass.
+//
+// Each key in the map represents the name of a point
+// in the cuetdtest matrix.
+type Skip map[string]string
+
+type location struct {
+	root cue.Value
+	path cue.Path
+}
+
+func (loc location) Pos() token.Pos {
+	return loc.root.LookupPath(loc.path).Pos()
 }
 
 // WriteTestDir writes test data files as read by ReadTestDir
@@ -80,8 +91,11 @@ func ReadTestDir(dir string) (tests map[string][]*Schema, err error) {
 	os.Setenv("CUE_EXPERIMENT", "embed")
 	inst := load.Instances([]string{"."}, &load.Config{
 		Dir: dir,
+		// Just like in the cue/load tests, prevent Go tests from walking up to the root
+		// directory of the git repository, as that almost always causes test cache misses.
+		ModuleRoot: dir,
 	})[0]
-	if err != nil {
+	if err := inst.Err; err != nil {
 		return nil, err
 	}
 	ctx := cuecontext.New(cuecontext.Interpreter(embed.New()))
@@ -97,9 +111,17 @@ func ReadTestDir(dir string) (tests map[string][]*Schema, err error) {
 		return nil, err
 	}
 	// Fix up the raw JSON data to avoid running into some decode issues.
-	for _, schemas := range tests {
-		for _, schema := range schemas {
-			for _, test := range schema.Tests {
+	for filename, schemas := range tests {
+		for i, schema := range schemas {
+			schema.location = location{
+				root: val,
+				path: cue.MakePath(cue.Str(filename), cue.Index(i)),
+			}
+			for j, test := range schema.Tests {
+				test.location = location{
+					root: val,
+					path: cue.MakePath(cue.Str(filename), cue.Index(i), cue.Str("tests"), cue.Index(j)),
+				}
 				if len(test.Data) == 0 {
 					// See https://github.com/cue-lang/cue/issues/3397
 					test.Data = []byte("null")

@@ -328,8 +328,12 @@ func (v *Vertex) updateArcType(t ArcType) {
 	if (s != nil || v.isFinal()) && s.ctx.isDevVersion() {
 		c := s.ctx
 		if s.scheduler.frozen.meets(arcTypeKnown) {
+			p := token.NoPos
+			if src := c.Source(); src != nil {
+				p = src.Pos()
+			}
 			parent := v.Parent
-			parent.reportFieldCycleError(c, c.Source().Pos(), v.Label)
+			parent.reportFieldCycleError(c, p, v.Label)
 			return
 		}
 	}
@@ -847,6 +851,18 @@ func (v *Vertex) setValue(ctx *OpContext, state vertexStatus, value BaseValue) *
 	return nil
 }
 
+func (n *nodeContext) setBaseValue(value BaseValue) {
+	n.node.BaseValue = value
+}
+
+// swapBaseValue swaps the BaseValue of a node with the given value and returns
+// the previous value.
+func (n *nodeContext) swapBaseValue(value BaseValue) (saved BaseValue) {
+	saved = n.node.BaseValue
+	n.setBaseValue(value)
+	return saved
+}
+
 // ToVertex wraps v in a new Vertex, if necessary.
 func ToVertex(v Value) *Vertex {
 	switch x := v.(type) {
@@ -1180,7 +1196,10 @@ func (v *Vertex) AddConjunct(c Conjunct) *Bottom {
 		// change the order of fields in some cases.
 		//
 		// This is likely a bug in the evaluator and should not happen.
-		return &Bottom{Err: errors.Newf(token.NoPos, "cannot add conjunct")}
+		return &Bottom{
+			Err:  errors.Newf(token.NoPos, "cannot add conjunct"),
+			Node: v,
+		}
 	}
 	if !v.hasConjunct(c) {
 		v.addConjunctUnchecked(c)

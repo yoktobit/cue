@@ -7,7 +7,10 @@
 				"maxLength": 3
 			}
 		},
-		"skip": "extract error: cannot compile resulting schema: reference \"strings\" in label expression refers to field against which it would be matched:\n    generated.cue:5:3\n",
+		"skip": {
+			"v2": "extract error: cannot compile resulting schema: reference \"strings\" in label expression refers to field against which it would be matched:\n    generated.cue:5:3\n",
+			"v3": "extract error: cannot compile resulting schema: reference \"strings\" in label expression refers to field against which it would be matched:\n    generated.cue:5:3\n"
+		},
 		"tests": [
 			{
 				"description": "all property names valid",
@@ -16,7 +19,10 @@
 					"foo": {}
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "some property names invalid",
@@ -25,13 +31,19 @@
 					"foobar": {}
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "object without properties is valid",
 				"data": {},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "ignores arrays",
@@ -42,19 +54,28 @@
 					4
 				],
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "ignores strings",
 				"data": "foobar",
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "ignores other non-objects",
 				"data": 12,
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -82,7 +103,10 @@
 					"aaA": {}
 				},
 				"valid": false,
-				"skip": "unexpected success"
+				"skip": {
+					"v2": "unexpected success",
+					"v3": "unexpected success"
+				}
 			},
 			{
 				"description": "object without properties is valid",
@@ -124,12 +148,18 @@
 				"data": {
 					"foo": 1
 				},
-				"valid": false
+				"valid": false,
+				"skip": {
+					"v3": "unexpected success"
+				}
 			},
 			{
 				"description": "empty object is valid",
 				"data": {},
-				"valid": true
+				"valid": true,
+				"skip": {
+					"v3": "conflicting values [...] and {} (mismatched types list and struct):\n    generated.cue:2:33\n    instance.json:1:1\nconflicting values bool and {} (mismatched types bool and struct):\n    generated.cue:2:8\n    instance.json:1:1\nconflicting values null and {} (mismatched types null and struct):\n    generated.cue:2:1\n    instance.json:1:1\nconflicting values number and {} (mismatched types number and struct):\n    generated.cue:2:15\n    instance.json:1:1\nconflicting values string and {} (mismatched types string and struct):\n    generated.cue:2:24\n    instance.json:1:1\nexplicit error (_|_ literal) in source:\n    generated.cue:3:3\n"
+				}
 			}
 		]
 	}

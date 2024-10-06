@@ -4,7 +4,6 @@
 		"schema": {
 			"minProperties": 1
 		},
-		"skip": "extract error: unsupported constraint \"minProperties\"",
 		"tests": [
 			{
 				"description": "longer is valid",
@@ -12,40 +11,34 @@
 					"foo": 1,
 					"bar": 2
 				},
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "exact length is valid",
 				"data": {
 					"foo": 1
 				},
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "too short is invalid",
 				"data": {},
-				"valid": false,
-				"skip": "could not compile schema"
+				"valid": false
 			},
 			{
 				"description": "ignores arrays",
 				"data": [],
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "ignores strings",
 				"data": "",
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "ignores other non-objects",
 				"data": 12,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			}
 		]
 	},
@@ -54,7 +47,6 @@
 		"schema": {
 			"minProperties": 1.0
 		},
-		"skip": "extract error: unsupported constraint \"minProperties\"",
 		"tests": [
 			{
 				"description": "longer is valid",
@@ -62,14 +54,12 @@
 					"foo": 1,
 					"bar": 2
 				},
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "too short is invalid",
 				"data": {},
-				"valid": false,
-				"skip": "could not compile schema"
+				"valid": false
 			}
 		]
 	}

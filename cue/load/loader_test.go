@@ -612,7 +612,33 @@ dir:    $CWD/testdata/testmod/issue3306/x
 display:./issue3306/x
 files:
     $CWD/testdata/testmod/issue3306/x.cue
-    $CWD/testdata/testmod/issue3306/x/x.cue`}}
+    $CWD/testdata/testmod/issue3306/x/x.cue`}, {
+		// This test checks that when we use Package: "*",
+		// we can still use imported packages.
+		name: "AllPackagesWithImports",
+		cfg: &Config{
+			Dir:     testdataDir,
+			Package: "*",
+		},
+		args: []string{"."},
+		want: `path:   mod.test/test@v0:_
+module: mod.test/test@v0
+root:   $CWD/testdata/testmod
+dir:    $CWD/testdata/testmod
+display:.
+files:
+    $CWD/testdata/testmod/anon.cue
+
+path:   mod.test/test@v0:test
+module: mod.test/test@v0
+root:   $CWD/testdata/testmod
+dir:    $CWD/testdata/testmod
+display:.
+files:
+    $CWD/testdata/testmod/test.cue
+imports:
+    mod.test/test/sub: $CWD/testdata/testmod/sub/sub.cue`,
+	}}
 	tdtest.Run(t, testCases, func(t *tdtest.T, tc *loadTest) {
 		pkgs := Instances(tc.args, tc.cfg)
 
@@ -731,7 +757,7 @@ package %s
 
 x: 1
 `, string(c))
-		err := os.WriteFile(filepath.Join(testDir, string(c)+".cue"), []byte(contents), 0o644)
+		err := os.WriteFile(filepath.Join(testDir, string(c)+".cue"), []byte(contents), 0o666)
 		qt.Assert(t, qt.IsNil(err))
 	}
 

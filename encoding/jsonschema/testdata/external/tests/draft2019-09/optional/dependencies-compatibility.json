@@ -36,7 +36,10 @@
 					"bar": 2
 				},
 				"valid": false,
-				"skip": "unexpected success"
+				"skip": {
+					"v2": "unexpected success",
+					"v3": "unexpected success"
+				}
 			},
 			{
 				"description": "ignores arrays",
@@ -126,7 +129,10 @@
 					"quux": 2
 				},
 				"valid": false,
-				"skip": "unexpected success"
+				"skip": {
+					"v2": "unexpected success",
+					"v3": "unexpected success"
+				}
 			},
 			{
 				"description": "missing other dependency",
@@ -135,7 +141,10 @@
 					"quux": 2
 				},
 				"valid": false,
-				"skip": "unexpected success"
+				"skip": {
+					"v2": "unexpected success",
+					"v3": "unexpected success"
+				}
 			},
 			{
 				"description": "missing both dependencies",
@@ -143,7 +152,10 @@
 					"quux": 1
 				},
 				"valid": false,
-				"skip": "unexpected success"
+				"skip": {
+					"v2": "unexpected success",
+					"v3": "unexpected success"
+				}
 			}
 		]
 	},
@@ -184,7 +196,10 @@
 					"foo": 2
 				},
 				"valid": false,
-				"skip": "unexpected success"
+				"skip": {
+					"v2": "unexpected success",
+					"v3": "unexpected success"
+				}
 			},
 			{
 				"description": "quoted quotes missing dependent",
@@ -192,7 +207,10 @@
 					"foo\"bar": 2
 				},
 				"valid": false,
-				"skip": "unexpected success"
+				"skip": {
+					"v2": "unexpected success",
+					"v3": "unexpected success"
+				}
 			}
 		]
 	},
@@ -236,7 +254,10 @@
 					"bar": 2
 				},
 				"valid": false,
-				"skip": "unexpected success"
+				"skip": {
+					"v2": "unexpected success",
+					"v3": "unexpected success"
+				}
 			},
 			{
 				"description": "wrong type other",
@@ -245,7 +266,10 @@
 					"bar": "quux"
 				},
 				"valid": false,
-				"skip": "unexpected success"
+				"skip": {
+					"v2": "unexpected success",
+					"v3": "unexpected success"
+				}
 			},
 			{
 				"description": "wrong type both",
@@ -254,7 +278,10 @@
 					"bar": "quux"
 				},
 				"valid": false,
-				"skip": "unexpected success"
+				"skip": {
+					"v2": "unexpected success",
+					"v3": "unexpected success"
+				}
 			},
 			{
 				"description": "ignores arrays",
@@ -298,7 +325,10 @@
 					"bar": 2
 				},
 				"valid": false,
-				"skip": "unexpected success"
+				"skip": {
+					"v2": "unexpected success",
+					"v3": "unexpected success"
+				}
 			},
 			{
 				"description": "object with both properties is invalid",
@@ -307,7 +337,10 @@
 					"bar": 2
 				},
 				"valid": false,
-				"skip": "unexpected success"
+				"skip": {
+					"v2": "unexpected success",
+					"v3": "unexpected success"
+				}
 			},
 			{
 				"description": "empty object is valid",
@@ -350,7 +383,10 @@
 					}
 				},
 				"valid": false,
-				"skip": "unexpected success"
+				"skip": {
+					"v2": "unexpected success",
+					"v3": "unexpected success"
+				}
 			},
 			{
 				"description": "quoted tab invalid under dependent schema",
@@ -359,7 +395,10 @@
 					"a": 2
 				},
 				"valid": false,
-				"skip": "unexpected success"
+				"skip": {
+					"v2": "unexpected success",
+					"v3": "unexpected success"
+				}
 			},
 			{
 				"description": "quoted quote invalid under dependent schema",
@@ -367,7 +406,10 @@
 					"foo'bar": 1
 				},
 				"valid": false,
-				"skip": "unexpected success"
+				"skip": {
+					"v2": "unexpected success",
+					"v3": "unexpected success"
+				}
 			}
 		]
 	}

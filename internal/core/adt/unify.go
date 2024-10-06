@@ -260,7 +260,7 @@ func (v *Vertex) unify(c *OpContext, needs condition, mode runMode) bool {
 		if b := n.node.Bottom(); b != nil {
 			err = CombineErrors(nil, b, err)
 		}
-		n.node.BaseValue = err
+		n.setBaseValue(err)
 	}
 
 	if mode == attemptOnly {
@@ -426,20 +426,20 @@ func (n *nodeContext) completeNodeTasks(mode runMode) {
 
 		cc.decDependent(n.ctx, ROOT, nil) // REF(decrement:nodeDone)
 	}
-
-	return
 }
 
 func (n *nodeContext) updateScalar() {
 	// Set BaseValue to scalar, but only if it was not set before. Most notably,
 	// errors should not be discarded.
 	if n.scalar != nil && (!n.node.IsErr() || isCyclePlaceholder(n.node.BaseValue)) {
-		n.node.BaseValue = n.scalar
+		n.setBaseValue(n.scalar)
 		n.signal(scalarKnown)
 	}
 }
 
 func (n *nodeContext) completeAllArcs(needs condition, mode runMode) bool {
+	// TODO: this can go when lookup vs evaluation distinction
+	// has been improved.
 	if n.node.status == evaluatingArcs {
 		// NOTE: this was an "incomplete" error pre v0.6. If this is a problem
 		// we could make this a CycleError. Technically, this may be correct,
@@ -521,7 +521,7 @@ func (n *nodeContext) completeAllArcs(needs condition, mode runMode) bool {
 		if !a.Label.IsLet() && a.ArcType <= ArcRequired {
 			a := a.DerefValue()
 			if err := a.Bottom(); err != nil {
-				n.node.AddChildError(err)
+				n.AddChildError(err)
 			}
 			success = true // other arcs are irrelevant
 		}
@@ -610,6 +610,13 @@ func (n *nodeContext) evalArcTypes() {
 	}
 }
 
+func root(v *Vertex) *Vertex {
+	for v.Parent != nil {
+		v = v.Parent
+	}
+	return v
+}
+
 func (v *Vertex) lookup(c *OpContext, pos token.Pos, f Feature, flags combinedFlags) *Vertex {
 	task := c.current()
 	needs := flags.conditions()
@@ -626,10 +633,15 @@ func (v *Vertex) lookup(c *OpContext, pos token.Pos, f Feature, flags combinedFl
 		// proceed with partial data, in which case a "pending" arc will be
 		// created to be completed later.
 
-		// Report error for now.
+		// Propagate error if the error is from a different package. This
+		// compensates for the fact that we do not fully evaluate the package.
 		if state.hasErr() {
-			c.AddBottom(state.getErr())
+			err := state.getErr()
+			if err != nil && err.Node != nil && root(err.Node) != root(v) {
+				c.AddBottom(err)
+			}
 		}
+
 		// TODO: ideally this should not be run at this point. Consider under
 		// which circumstances this is still necessary, and at least ensure
 		// this will not be run if node v currently has a running task.
@@ -743,6 +755,7 @@ handleArcType:
 		label := f.SelectorString(c.Runtime)
 		b := &Bottom{
 			Code: IncompleteError,
+			Node: v,
 			Err: c.NewPosf(pos,
 				"cannot reference optional field: %s", label),
 		}

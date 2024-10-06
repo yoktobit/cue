@@ -81,15 +81,13 @@
 			},
 			"maxContains": 1.0
 		},
-		"skip": "extract error: value of \"maxContains\" must be a non-negative integer value",
 		"tests": [
 			{
 				"description": "one element matches, valid maxContains",
 				"data": [
 					1
 				],
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "too many elements match, invalid maxContains",
@@ -97,8 +95,7 @@
 					1,
 					1
 				],
-				"valid": false,
-				"skip": "could not compile schema"
+				"valid": false
 			}
 		]
 	},

@@ -134,15 +134,13 @@
 			},
 			"minContains": 2.0
 		},
-		"skip": "extract error: value of \"minContains\" must be a non-negative integer value",
 		"tests": [
 			{
 				"description": "one element matches, invalid minContains",
 				"data": [
 					1
 				],
-				"valid": false,
-				"skip": "could not compile schema"
+				"valid": false
 			},
 			{
 				"description": "both elements match, valid minContains",
@@ -150,8 +148,7 @@
 					1,
 					1
 				],
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			}
 		]
 	},

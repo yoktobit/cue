@@ -8,6 +8,14 @@ cmp stdout cue-help-cmd.stdout
 exec cue help cmd hello
 cmp stdout cue-help-cmd-hello.stdout
 
+exec cue help cmd hello .
+cmp stdout cue-help-cmd-hello.stdout
+
+mkdir subdir
+cp task_tool.cue subdir
+exec cue help cmd hello ./subdir
+cmp stdout cue-help-cmd-hello.stdout
+
 ! exec cue help cmd missing
 stderr -count=1 'Unknown cmd command: missing'
 stderr -count=1 '^Available Commands:$'
@@ -167,7 +175,6 @@ Global Flags:
   -E, --all-errors   print all available errors
   -i, --ignore       proceed in the presence of errors
   -s, --simplify     simplify output
-      --strict       report errors for lossy mappings
       --trace        trace computation
   -v, --verbose      print information about progress
 
@@ -182,6 +189,5 @@ Global Flags:
   -E, --all-errors   print all available errors
   -i, --ignore       proceed in the presence of errors
   -s, --simplify     simplify output
-      --strict       report errors for lossy mappings
       --trace        trace computation
   -v, --verbose      print information about progress

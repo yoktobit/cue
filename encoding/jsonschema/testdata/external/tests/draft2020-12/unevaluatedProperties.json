@@ -6,13 +6,19 @@
 			"type": "object",
 			"unevaluatedProperties": true
 		},
-		"skip": "extract error: unsupported constraint \"unevaluatedProperties\"",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented"
+		},
 		"tests": [
 			{
 				"description": "with no unevaluated properties",
 				"data": {},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "with unevaluated properties",
@@ -20,7 +26,10 @@
 					"foo": "foo"
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -34,13 +43,19 @@
 				"minLength": 3
 			}
 		},
-		"skip": "extract error: unsupported constraint \"unevaluatedProperties\"",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented"
+		},
 		"tests": [
 			{
 				"description": "with no unevaluated properties",
 				"data": {},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "with valid unevaluated properties",
@@ -48,7 +63,10 @@
 					"foo": "foo"
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "with invalid unevaluated properties",
@@ -56,7 +74,10 @@
 					"foo": "fo"
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -67,13 +88,19 @@
 			"type": "object",
 			"unevaluatedProperties": false
 		},
-		"skip": "extract error: unsupported constraint \"unevaluatedProperties\"",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented"
+		},
 		"tests": [
 			{
 				"description": "with no unevaluated properties",
 				"data": {},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "with unevaluated properties",
@@ -81,7 +108,10 @@
 					"foo": "foo"
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -97,7 +127,10 @@
 			},
 			"unevaluatedProperties": false
 		},
-		"skip": "extract error: unsupported constraint \"unevaluatedProperties\"",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented"
+		},
 		"tests": [
 			{
 				"description": "with no unevaluated properties",
@@ -105,7 +138,10 @@
 					"foo": "foo"
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "with unevaluated properties",
@@ -114,7 +150,10 @@
 					"bar": "bar"
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -130,7 +169,10 @@
 			},
 			"unevaluatedProperties": false
 		},
-		"skip": "extract error: unsupported constraint \"unevaluatedProperties\"",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented"
+		},
 		"tests": [
 			{
 				"description": "with no unevaluated properties",
@@ -138,7 +180,10 @@
 					"foo": "foo"
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "with unevaluated properties",
@@ -147,7 +192,10 @@
 					"bar": "bar"
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -164,7 +212,10 @@
 			"additionalProperties": true,
 			"unevaluatedProperties": false
 		},
-		"skip": "extract error: unsupported constraint \"unevaluatedProperties\"",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented"
+		},
 		"tests": [
 			{
 				"description": "with no additional properties",
@@ -172,7 +223,10 @@
 					"foo": "foo"
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "with additional properties",
@@ -181,7 +235,10 @@
 					"bar": "bar"
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -206,7 +263,10 @@
 			],
 			"unevaluatedProperties": false
 		},
-		"skip": "extract error: unsupported constraint \"unevaluatedProperties\"",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented"
+		},
 		"tests": [
 			{
 				"description": "with no additional properties",
@@ -215,7 +275,10 @@
 					"bar": "bar"
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "with additional properties",
@@ -225,7 +288,10 @@
 					"baz": "baz"
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -250,7 +316,10 @@
 			],
 			"unevaluatedProperties": false
 		},
-		"skip": "extract error: unsupported constraint \"unevaluatedProperties\"",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented"
+		},
 		"tests": [
 			{
 				"description": "with no additional properties",
@@ -259,7 +328,10 @@
 					"bar": "bar"
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "with additional properties",
@@ -269,7 +341,10 @@
 					"baz": "baz"
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -290,7 +365,10 @@
 			],
 			"unevaluatedProperties": false
 		},
-		"skip": "extract error: unsupported constraint \"unevaluatedProperties\"",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented"
+		},
 		"tests": [
 			{
 				"description": "with no additional properties",
@@ -298,7 +376,10 @@
 					"foo": "foo"
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "with additional properties",
@@ -307,7 +388,10 @@
 					"bar": "bar"
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -331,7 +415,10 @@
 				"maxLength": 2
 			}
 		},
-		"skip": "extract error: unsupported constraint \"unevaluatedProperties\" (and 1 more errors)",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented (and 1 more errors)",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented (and 1 more errors)"
+		},
 		"tests": [
 			{
 				"description": "with no nested unevaluated properties",
@@ -339,7 +426,10 @@
 					"foo": "foo"
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "with nested unevaluated properties",
@@ -348,7 +438,10 @@
 					"bar": "bar"
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -396,7 +489,10 @@
 			],
 			"unevaluatedProperties": false
 		},
-		"skip": "extract error: unsupported constraint \"unevaluatedProperties\"",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented"
+		},
 		"tests": [
 			{
 				"description": "when one matches and has no unevaluated properties",
@@ -405,7 +501,10 @@
 					"bar": "bar"
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "when one matches and has unevaluated properties",
@@ -415,7 +514,10 @@
 					"baz": "not-baz"
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "when two match and has no unevaluated properties",
@@ -425,7 +527,10 @@
 					"baz": "baz"
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "when two match and has unevaluated properties",
@@ -436,7 +541,10 @@
 					"quux": "not-quux"
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -474,7 +582,10 @@
 			],
 			"unevaluatedProperties": false
 		},
-		"skip": "extract error: unsupported constraint \"unevaluatedProperties\"",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented"
+		},
 		"tests": [
 			{
 				"description": "with no unevaluated properties",
@@ -483,7 +594,10 @@
 					"bar": "bar"
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "with unevaluated properties",
@@ -493,7 +607,10 @@
 					"quux": "quux"
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -521,7 +638,10 @@
 			},
 			"unevaluatedProperties": false
 		},
-		"skip": "extract error: unsupported constraint \"not\" (and 1 more errors)",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented"
+		},
 		"tests": [
 			{
 				"description": "with unevaluated properties",
@@ -530,7 +650,10 @@
 					"bar": "bar"
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -571,7 +694,10 @@
 			},
 			"unevaluatedProperties": false
 		},
-		"skip": "extract error: unsupported constraint \"if\" (and 3 more errors)",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented"
+		},
 		"tests": [
 			{
 				"description": "when if is true and has no unevaluated properties",
@@ -580,7 +706,10 @@
 					"bar": "bar"
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "when if is true and has unevaluated properties",
@@ -590,7 +719,10 @@
 					"baz": "baz"
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "when if is false and has no unevaluated properties",
@@ -598,7 +730,10 @@
 					"baz": "baz"
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "when if is false and has unevaluated properties",
@@ -607,7 +742,10 @@
 					"baz": "baz"
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -638,7 +776,10 @@
 			},
 			"unevaluatedProperties": false
 		},
-		"skip": "extract error: unsupported constraint \"if\" (and 2 more errors)",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented"
+		},
 		"tests": [
 			{
 				"description": "when if is true and has no unevaluated properties",
@@ -647,7 +788,10 @@
 					"bar": "bar"
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "when if is true and has unevaluated properties",
@@ -657,7 +801,10 @@
 					"baz": "baz"
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "when if is false and has no unevaluated properties",
@@ -665,7 +812,10 @@
 					"baz": "baz"
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "when if is false and has unevaluated properties",
@@ -674,7 +824,10 @@
 					"baz": "baz"
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -705,7 +858,10 @@
 			},
 			"unevaluatedProperties": false
 		},
-		"skip": "extract error: unsupported constraint \"if\" (and 2 more errors)",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented"
+		},
 		"tests": [
 			{
 				"description": "when if is true and has no unevaluated properties",
@@ -714,7 +870,10 @@
 					"bar": "bar"
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "when if is true and has unevaluated properties",
@@ -724,7 +883,10 @@
 					"baz": "baz"
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "when if is false and has no unevaluated properties",
@@ -732,7 +894,10 @@
 					"baz": "baz"
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "when if is false and has unevaluated properties",
@@ -741,7 +906,10 @@
 					"baz": "baz"
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -769,7 +937,10 @@
 			},
 			"unevaluatedProperties": false
 		},
-		"skip": "extract error: unsupported constraint \"dependentSchemas\" (and 1 more errors)",
+		"skip": {
+			"v2": "extract error: keyword \"dependentSchemas\" not yet implemented (and 1 more errors)",
+			"v3": "extract error: keyword \"dependentSchemas\" not yet implemented (and 1 more errors)"
+		},
 		"tests": [
 			{
 				"description": "with no unevaluated properties",
@@ -778,7 +949,10 @@
 					"bar": "bar"
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "with unevaluated properties",
@@ -786,7 +960,10 @@
 					"bar": "bar"
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -805,7 +982,10 @@
 			],
 			"unevaluatedProperties": false
 		},
-		"skip": "extract error: unsupported constraint \"unevaluatedProperties\"",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented"
+		},
 		"tests": [
 			{
 				"description": "with no unevaluated properties",
@@ -813,7 +993,10 @@
 					"foo": "foo"
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "with unevaluated properties",
@@ -821,7 +1004,10 @@
 					"bar": "bar"
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -847,7 +1033,10 @@
 				}
 			}
 		},
-		"skip": "extract error: unsupported constraint \"unevaluatedProperties\"",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented"
+		},
 		"tests": [
 			{
 				"description": "with no unevaluated properties",
@@ -856,7 +1045,10 @@
 					"bar": "bar"
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "with unevaluated properties",
@@ -866,7 +1058,10 @@
 					"baz": "baz"
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -892,7 +1087,10 @@
 				}
 			}
 		},
-		"skip": "extract error: unsupported constraint \"unevaluatedProperties\"",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented"
+		},
 		"tests": [
 			{
 				"description": "with no unevaluated properties",
@@ -901,7 +1099,10 @@
 					"bar": "bar"
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "with unevaluated properties",
@@ -911,7 +1112,10 @@
 					"baz": "baz"
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -950,7 +1154,10 @@
 				}
 			}
 		},
-		"skip": "extract error: unsupported constraint \"$dynamicAnchor\" (and 3 more errors)",
+		"skip": {
+			"v2": "extract error: keyword \"$dynamicAnchor\" not yet implemented (and 3 more errors)",
+			"v3": "extract error: keyword \"$dynamicAnchor\" not yet implemented (and 3 more errors)"
+		},
 		"tests": [
 			{
 				"description": "with no unevaluated properties",
@@ -959,7 +1166,10 @@
 					"bar": "bar"
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "with unevaluated properties",
@@ -969,7 +1179,10 @@
 					"baz": "baz"
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -988,7 +1201,10 @@
 				}
 			]
 		},
-		"skip": "extract error: unsupported constraint \"unevaluatedProperties\"",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented"
+		},
 		"tests": [
 			{
 				"description": "always fails",
@@ -996,7 +1212,10 @@
 					"foo": 1
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -1015,7 +1234,10 @@
 				}
 			]
 		},
-		"skip": "extract error: unsupported constraint \"unevaluatedProperties\"",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented"
+		},
 		"tests": [
 			{
 				"description": "always fails",
@@ -1023,7 +1245,10 @@
 					"foo": 1
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -1044,7 +1269,10 @@
 			],
 			"unevaluatedProperties": false
 		},
-		"skip": "extract error: unsupported constraint \"unevaluatedProperties\" (and 1 more errors)",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented (and 1 more errors)",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented (and 1 more errors)"
+		},
 		"tests": [
 			{
 				"description": "with no nested unevaluated properties",
@@ -1052,7 +1280,10 @@
 					"foo": "foo"
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "with nested unevaluated properties",
@@ -1061,7 +1292,10 @@
 					"bar": "bar"
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -1082,7 +1316,10 @@
 			],
 			"unevaluatedProperties": false
 		},
-		"skip": "extract error: unsupported constraint \"unevaluatedProperties\" (and 1 more errors)",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented (and 1 more errors)",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented (and 1 more errors)"
+		},
 		"tests": [
 			{
 				"description": "with no nested unevaluated properties",
@@ -1090,7 +1327,10 @@
 					"foo": "foo"
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "with nested unevaluated properties",
@@ -1099,7 +1339,10 @@
 					"bar": "bar"
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -1120,7 +1363,10 @@
 			],
 			"unevaluatedProperties": true
 		},
-		"skip": "extract error: unsupported constraint \"unevaluatedProperties\" (and 1 more errors)",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented (and 1 more errors)",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented (and 1 more errors)"
+		},
 		"tests": [
 			{
 				"description": "with no nested unevaluated properties",
@@ -1128,7 +1374,10 @@
 					"foo": "foo"
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "with nested unevaluated properties",
@@ -1137,7 +1386,10 @@
 					"bar": "bar"
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -1158,7 +1410,10 @@
 			],
 			"unevaluatedProperties": true
 		},
-		"skip": "extract error: unsupported constraint \"unevaluatedProperties\" (and 1 more errors)",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented (and 1 more errors)",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented (and 1 more errors)"
+		},
 		"tests": [
 			{
 				"description": "with no nested unevaluated properties",
@@ -1166,7 +1421,10 @@
 					"foo": "foo"
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "with nested unevaluated properties",
@@ -1175,7 +1433,10 @@
 					"bar": "bar"
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -1198,7 +1459,10 @@
 				}
 			]
 		},
-		"skip": "extract error: unsupported constraint \"unevaluatedProperties\" (and 1 more errors)",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented (and 1 more errors)",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented (and 1 more errors)"
+		},
 		"tests": [
 			{
 				"description": "with no nested unevaluated properties",
@@ -1206,7 +1470,10 @@
 					"foo": "foo"
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "with nested unevaluated properties",
@@ -1215,7 +1482,10 @@
 					"bar": "bar"
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -1238,7 +1508,10 @@
 				}
 			]
 		},
-		"skip": "extract error: unsupported constraint \"unevaluatedProperties\" (and 1 more errors)",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented (and 1 more errors)",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented (and 1 more errors)"
+		},
 		"tests": [
 			{
 				"description": "with no nested unevaluated properties",
@@ -1246,7 +1519,10 @@
 					"foo": "foo"
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "with nested unevaluated properties",
@@ -1255,7 +1531,10 @@
 					"bar": "bar"
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -1290,7 +1569,10 @@
 				}
 			]
 		},
-		"skip": "extract error: unsupported constraint \"unevaluatedProperties\"",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented"
+		},
 		"tests": [
 			{
 				"description": "no extra properties",
@@ -1300,7 +1582,10 @@
 					}
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "uncle keyword evaluation is not significant",
@@ -1311,7 +1596,10 @@
 					}
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -1336,7 +1624,10 @@
 				}
 			]
 		},
-		"skip": "extract error: unsupported constraint \"unevaluatedProperties\"",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented"
+		},
 		"tests": [
 			{
 				"description": "base case: both properties present",
@@ -1345,7 +1636,10 @@
 					"bar": 1
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "in place applicator siblings, bar is missing",
@@ -1353,7 +1647,10 @@
 					"foo": 1
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "in place applicator siblings, foo is missing",
@@ -1361,7 +1658,10 @@
 					"bar": 1
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -1386,7 +1686,10 @@
 				}
 			]
 		},
-		"skip": "extract error: unsupported constraint \"unevaluatedProperties\"",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented"
+		},
 		"tests": [
 			{
 				"description": "base case: both properties present",
@@ -1395,7 +1698,10 @@
 					"bar": 1
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "in place applicator siblings, bar is missing",
@@ -1403,7 +1709,10 @@
 					"foo": 1
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "in place applicator siblings, foo is missing",
@@ -1411,7 +1720,10 @@
 					"bar": 1
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -1427,13 +1739,19 @@
 			},
 			"unevaluatedProperties": false
 		},
-		"skip": "extract error: unsupported constraint \"unevaluatedProperties\"",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented"
+		},
 		"tests": [
 			{
 				"description": "Empty is valid",
 				"data": {},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "Single is valid",
@@ -1441,7 +1759,10 @@
 					"x": {}
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "Unevaluated on 1st level is invalid",
@@ -1450,7 +1771,10 @@
 					"y": {}
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "Nested is valid",
@@ -1460,7 +1784,10 @@
 					}
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "Unevaluated on 2nd level is invalid",
@@ -1471,7 +1798,10 @@
 					}
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "Deep nested is valid",
@@ -1483,7 +1813,10 @@
 					}
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "Unevaluated on 3rd level is invalid",
@@ -1496,7 +1829,10 @@
 					}
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -1546,13 +1882,19 @@
 			],
 			"unevaluatedProperties": false
 		},
-		"skip": "extract error: unsupported constraint \"unevaluatedProperties\"",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented"
+		},
 		"tests": [
 			{
 				"description": "Empty is invalid (no x or y)",
 				"data": {},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "a and b are invalid (no x or y)",
@@ -1561,7 +1903,10 @@
 					"b": 1
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "x and y are invalid",
@@ -1570,7 +1915,10 @@
 					"y": 1
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "a and x are valid",
@@ -1579,7 +1927,10 @@
 					"x": 1
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "a and y are valid",
@@ -1588,7 +1939,10 @@
 					"y": 1
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "a and b and x are valid",
@@ -1598,7 +1952,10 @@
 					"x": 1
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "a and b and y are valid",
@@ -1608,7 +1965,10 @@
 					"y": 1
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "a and b and x and y are invalid",
@@ -1619,7 +1979,10 @@
 					"y": 1
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -1693,13 +2056,19 @@
 			],
 			"unevaluatedProperties": false
 		},
-		"skip": "extract error: unsupported constraint \"unevaluatedProperties\" (and 1 more errors)",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented (and 1 more errors)",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented (and 1 more errors)"
+		},
 		"tests": [
 			{
 				"description": "Empty is invalid",
 				"data": {},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "a is valid",
@@ -1707,7 +2076,10 @@
 					"a": 1
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "b is valid",
@@ -1715,7 +2087,10 @@
 					"b": 1
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "c is valid",
@@ -1723,7 +2098,10 @@
 					"c": 1
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "d is valid",
@@ -1731,7 +2109,10 @@
 					"d": 1
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "a + b is invalid",
@@ -1740,7 +2121,10 @@
 					"b": 1
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "a + c is invalid",
@@ -1749,7 +2133,10 @@
 					"c": 1
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "a + d is invalid",
@@ -1758,7 +2145,10 @@
 					"d": 1
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "b + c is invalid",
@@ -1767,7 +2157,10 @@
 					"c": 1
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "b + d is invalid",
@@ -1776,7 +2169,10 @@
 					"d": 1
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "c + d is invalid",
@@ -1785,7 +2181,10 @@
 					"d": 1
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "xx is valid",
@@ -1793,7 +2192,10 @@
 					"xx": 1
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "xx + foox is valid",
@@ -1802,7 +2204,10 @@
 					"foox": 1
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "xx + foo is invalid",
@@ -1811,7 +2216,10 @@
 					"foo": 1
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "xx + a is invalid",
@@ -1820,7 +2228,10 @@
 					"a": 1
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "xx + b is invalid",
@@ -1829,7 +2240,10 @@
 					"b": 1
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "xx + c is invalid",
@@ -1838,7 +2252,10 @@
 					"c": 1
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "xx + d is invalid",
@@ -1847,7 +2264,10 @@
 					"d": 1
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "all is valid",
@@ -1855,7 +2275,10 @@
 					"all": 1
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "all + foo is valid",
@@ -1864,7 +2287,10 @@
 					"foo": 1
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "all + a is invalid",
@@ -1873,7 +2299,10 @@
 					"a": 1
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -1883,43 +2312,64 @@
 			"$schema": "https://json-schema.org/draft/2020-12/schema",
 			"unevaluatedProperties": false
 		},
-		"skip": "extract error: unsupported constraint \"unevaluatedProperties\"",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented"
+		},
 		"tests": [
 			{
 				"description": "ignores booleans",
 				"data": true,
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "ignores integers",
 				"data": 123,
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "ignores floats",
 				"data": 1.0,
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "ignores arrays",
 				"data": [],
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "ignores strings",
 				"data": "foo",
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "ignores null",
 				"data": null,
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -1931,7 +2381,10 @@
 				"type": "null"
 			}
 		},
-		"skip": "extract error: unsupported constraint \"unevaluatedProperties\"",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented"
+		},
 		"tests": [
 			{
 				"description": "allows null valued properties",
@@ -1939,7 +2392,10 @@
 					"foo": null
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -1954,7 +2410,10 @@
 				"type": "number"
 			}
 		},
-		"skip": "extract error: unsupported constraint \"unevaluatedProperties\"",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented"
+		},
 		"tests": [
 			{
 				"description": "allows only number properties",
@@ -1962,7 +2421,10 @@
 					"a": 1
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "string property is invalid",
@@ -1970,7 +2432,10 @@
 					"a": "b"
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -1987,7 +2452,10 @@
 			},
 			"unevaluatedProperties": false
 		},
-		"skip": "extract error: unsupported constraint \"if\" (and 1 more errors)",
+		"skip": {
+			"v2": "extract error: keyword \"unevaluatedProperties\" not yet implemented",
+			"v3": "extract error: keyword \"unevaluatedProperties\" not yet implemented"
+		},
 		"tests": [
 			{
 				"description": "valid in case if is evaluated",
@@ -1995,7 +2463,10 @@
 					"foo": "a"
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "invalid in case if is evaluated",
@@ -2003,7 +2474,10 @@
 					"bar": "a"
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -2024,7 +2498,10 @@
 			},
 			"unevaluatedProperties": false
 		},
-		"skip": "extract error: unsupported constraint \"dependentSchemas\" (and 1 more errors)",
+		"skip": {
+			"v2": "extract error: keyword \"dependentSchemas\" not yet implemented (and 1 more errors)",
+			"v3": "extract error: keyword \"dependentSchemas\" not yet implemented (and 1 more errors)"
+		},
 		"tests": [
 			{
 				"description": "unevaluatedProperties doesn't consider dependentSchemas",
@@ -2032,7 +2509,10 @@
 					"foo": ""
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "unevaluatedProperties doesn't see bar when foo2 is absent",
@@ -2040,7 +2520,10 @@
 					"bar": ""
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "unevaluatedProperties sees bar when foo2 is present",
@@ -2049,7 +2532,10 @@
 					"bar": ""
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	}

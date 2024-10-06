@@ -4,43 +4,36 @@
 		"schema": {
 			"format": "email"
 		},
-		"skip": "extract error: unsupported constraint \"format\"",
 		"tests": [
 			{
 				"description": "all string formats ignore integers",
 				"data": 12,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "all string formats ignore floats",
 				"data": 13.7,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "all string formats ignore objects",
 				"data": {},
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "all string formats ignore arrays",
 				"data": [],
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "all string formats ignore booleans",
 				"data": false,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "all string formats ignore nulls",
 				"data": null,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			}
 		]
 	},
@@ -49,43 +42,36 @@
 		"schema": {
 			"format": "ipv4"
 		},
-		"skip": "extract error: unsupported constraint \"format\"",
 		"tests": [
 			{
 				"description": "all string formats ignore integers",
 				"data": 12,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "all string formats ignore floats",
 				"data": 13.7,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "all string formats ignore objects",
 				"data": {},
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "all string formats ignore arrays",
 				"data": [],
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "all string formats ignore booleans",
 				"data": false,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "all string formats ignore nulls",
 				"data": null,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			}
 		]
 	},
@@ -94,43 +80,36 @@
 		"schema": {
 			"format": "ipv6"
 		},
-		"skip": "extract error: unsupported constraint \"format\"",
 		"tests": [
 			{
 				"description": "all string formats ignore integers",
 				"data": 12,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "all string formats ignore floats",
 				"data": 13.7,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "all string formats ignore objects",
 				"data": {},
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "all string formats ignore arrays",
 				"data": [],
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "all string formats ignore booleans",
 				"data": false,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "all string formats ignore nulls",
 				"data": null,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			}
 		]
 	},
@@ -139,43 +118,36 @@
 		"schema": {
 			"format": "hostname"
 		},
-		"skip": "extract error: unsupported constraint \"format\"",
 		"tests": [
 			{
 				"description": "all string formats ignore integers",
 				"data": 12,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "all string formats ignore floats",
 				"data": 13.7,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "all string formats ignore objects",
 				"data": {},
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "all string formats ignore arrays",
 				"data": [],
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "all string formats ignore booleans",
 				"data": false,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "all string formats ignore nulls",
 				"data": null,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			}
 		]
 	},
@@ -184,43 +156,36 @@
 		"schema": {
 			"format": "date-time"
 		},
-		"skip": "extract error: unsupported constraint \"format\"",
 		"tests": [
 			{
 				"description": "all string formats ignore integers",
 				"data": 12,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "all string formats ignore floats",
 				"data": 13.7,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "all string formats ignore objects",
 				"data": {},
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "all string formats ignore arrays",
 				"data": [],
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "all string formats ignore booleans",
 				"data": false,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "all string formats ignore nulls",
 				"data": null,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			}
 		]
 	},
@@ -229,43 +194,36 @@
 		"schema": {
 			"format": "uri"
 		},
-		"skip": "extract error: unsupported constraint \"format\"",
 		"tests": [
 			{
 				"description": "all string formats ignore integers",
 				"data": 12,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "all string formats ignore floats",
 				"data": 13.7,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "all string formats ignore objects",
 				"data": {},
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "all string formats ignore arrays",
 				"data": [],
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "all string formats ignore booleans",
 				"data": false,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "all string formats ignore nulls",
 				"data": null,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			}
 		]
 	}

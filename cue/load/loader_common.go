@@ -180,7 +180,6 @@ func (fp *fileProcessor) add(root string, file *build.File, mode importMode) {
 		fp.err = errors.Append(fp.err, err)
 		file.ExcludeReason = fp.err
 		p.InvalidFiles = append(p.InvalidFiles, file)
-		return
 	}
 	if err := setFileSource(fp.c, file); err != nil {
 		badFile(errors.Promote(err, ""))
@@ -243,15 +242,12 @@ func (fp *fileProcessor) add(root string, file *build.File, mode importMode) {
 			return
 		}
 		if q == nil {
-			q = &build.Instance{
-				PkgName: pkg,
-
-				Dir:         p.Dir,
-				DisplayPath: p.DisplayPath,
-				ImportPath:  p.ImportPath + ":" + pkg,
-				Root:        p.Root,
-				Module:      p.Module,
-			}
+			q = fp.c.Context.NewInstance(p.Dir, nil)
+			q.PkgName = pkg
+			q.DisplayPath = p.DisplayPath
+			q.ImportPath = p.ImportPath + ":" + pkg
+			q.Root = p.Root
+			q.Module = p.Module
 			fp.pkgs[pkg] = q
 		}
 		p = q

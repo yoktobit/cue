@@ -16,7 +16,10 @@
 				}
 			}
 		},
-		"skip": "extract error: unsupported constraint \"dependentSchemas\"",
+		"skip": {
+			"v2": "extract error: keyword \"dependentSchemas\" not yet implemented",
+			"v3": "extract error: keyword \"dependentSchemas\" not yet implemented"
+		},
 		"tests": [
 			{
 				"description": "valid",
@@ -25,7 +28,10 @@
 					"bar": 2
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "no dependency",
@@ -33,7 +39,10 @@
 					"foo": "quux"
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "wrong type",
@@ -42,7 +51,10 @@
 					"bar": 2
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "wrong type other",
@@ -51,7 +63,10 @@
 					"bar": "quux"
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "wrong type both",
@@ -60,7 +75,10 @@
 					"bar": "quux"
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "ignores arrays",
@@ -68,19 +86,28 @@
 					"bar"
 				],
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "ignores strings",
 				"data": "foobar",
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "ignores other non-objects",
 				"data": 12,
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -93,7 +120,10 @@
 				"bar": false
 			}
 		},
-		"skip": "extract error: unsupported constraint \"dependentSchemas\"",
+		"skip": {
+			"v2": "extract error: keyword \"dependentSchemas\" not yet implemented",
+			"v3": "extract error: keyword \"dependentSchemas\" not yet implemented"
+		},
 		"tests": [
 			{
 				"description": "object with property having schema true is valid",
@@ -101,7 +131,10 @@
 					"foo": 1
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "object with property having schema false is invalid",
@@ -109,7 +142,10 @@
 					"bar": 2
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "object with both properties is invalid",
@@ -118,13 +154,19 @@
 					"bar": 2
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "empty object is valid",
 				"data": {},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -143,7 +185,10 @@
 				}
 			}
 		},
-		"skip": "extract error: unsupported constraint \"dependentSchemas\"",
+		"skip": {
+			"v2": "extract error: keyword \"dependentSchemas\" not yet implemented",
+			"v3": "extract error: keyword \"dependentSchemas\" not yet implemented"
+		},
 		"tests": [
 			{
 				"description": "quoted tab",
@@ -154,7 +199,10 @@
 					"c": 4
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "quoted quote",
@@ -164,7 +212,10 @@
 					}
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "quoted tab invalid under dependent schema",
@@ -173,7 +224,10 @@
 					"a": 2
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "quoted quote invalid under dependent schema",
@@ -181,7 +235,10 @@
 					"foo'bar": 1
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -201,7 +258,10 @@
 				}
 			}
 		},
-		"skip": "extract error: unsupported constraint \"dependentSchemas\"",
+		"skip": {
+			"v2": "extract error: keyword \"dependentSchemas\" not yet implemented",
+			"v3": "extract error: keyword \"dependentSchemas\" not yet implemented"
+		},
 		"tests": [
 			{
 				"description": "matches root",
@@ -209,7 +269,10 @@
 					"foo": 1
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "matches dependency",
@@ -217,7 +280,10 @@
 					"bar": 1
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "matches both",
@@ -226,7 +292,10 @@
 					"bar": 2
 				},
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "no dependency",
@@ -234,7 +303,10 @@
 					"baz": 1
 				},
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	}

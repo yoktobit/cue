@@ -20,8 +20,11 @@ package jsonschema
 
 import (
 	"fmt"
+	"math"
 	"net/url"
+	"regexp/syntax"
 	"sort"
+	"strconv"
 	"strings"
 
 	"cuelang.org/go/cue"
@@ -123,6 +126,9 @@ func (d *decoder) schema(ref []ast.Label, v cue.Value) (a []ast.Decl) {
 	}
 
 	expr, state := root.schemaState(v, allTypes, nil, false)
+	if state.allowedTypes == 0 {
+		d.addErr(errors.Newf(state.pos.Pos(), "constraints are not possible to satisfy"))
+	}
 
 	tags := []string{}
 	if state.schemaVersionPresent {
@@ -221,12 +227,16 @@ func (d *decoder) number(n cue.Value) ast.Expr {
 	return n.Syntax(cue.Final()).(ast.Expr)
 }
 
-func (d *decoder) uint(n cue.Value) ast.Expr {
-	_, err := n.Uint64()
+func (d *decoder) uint(nv cue.Value) ast.Expr {
+	n, err := uint64Value(nv)
 	if err != nil {
-		d.errf(n, "invalid uint")
+		d.errf(nv, "invalid uint")
 	}
-	return n.Syntax(cue.Final()).(ast.Expr)
+	return &ast.BasicLit{
+		ValuePos: nv.Pos(),
+		Kind:     token.FLOAT,
+		Value:    strconv.FormatUint(n, 10),
+	}
 }
 
 func (d *decoder) boolValue(n cue.Value) bool {
@@ -248,6 +258,31 @@ func (d *decoder) strValue(n cue.Value) (s string, ok bool) {
 		return "", false
 	}
 	return s, true
+}
+
+func (d *decoder) regexpValue(n cue.Value) (ast.Expr, bool) {
+	s, ok := d.strValue(n)
+	if !ok {
+		return nil, false
+	}
+	_, err := syntax.Parse(s, syntax.Perl)
+	if err == nil {
+		return d.string(n), true
+	}
+	var regErr *syntax.Error
+	if errors.As(err, &regErr) && regErr.Code == syntax.ErrInvalidPerlOp {
+		// It's Perl syntax that we'll never support because the CUE evaluation
+		// engine uses Go's regexp implementation and because the missing
+		// features are usually not there for good reason (e.g. exponential
+		// runtime). In other words, this is a missing feature but not an invalid
+		// regular expression as such.
+		if d.cfg.StrictFeatures {
+			d.errf(n, "unsupported Perl regexp syntax in %q: %v", s, err)
+		}
+		return nil, false
+	}
+	d.errf(n, "invalid regexp %q: %v", s, err)
+	return nil, false
 }
 
 // const draftCutoff = 5
@@ -379,6 +414,10 @@ type state struct {
 	minContains *uint64
 	maxContains *uint64
 
+	ifConstraint   ast.Expr
+	thenConstraint ast.Expr
+	elseConstraint ast.Expr
+
 	schemaVersion        Version
 	schemaVersionPresent bool
 
@@ -449,10 +488,11 @@ const allTypes = cue.NullKind | cue.BoolKind | cue.NumberKind | cue.IntKind |
 // finalize constructs a CUE type from the collected constraints.
 func (s *state) finalize() (e ast.Expr) {
 	if s.allowedTypes == 0 {
-		// Nothing is possible.
-		s.addErr(errors.Newf(s.pos.Pos(), "constraints are not possible to satisfy"))
+		// Nothing is possible. This isn't a necessarily a problem, as
+		// we might be inside an allOf or oneOf with other valid constraints.
 		return bottom()
 	}
+	s.addIfThenElse()
 
 	conjuncts := []ast.Expr{}
 	disjuncts := []ast.Expr{}
@@ -602,6 +642,24 @@ outer:
 	return e
 }
 
+func (s *state) addIfThenElse() {
+	if s.ifConstraint == nil || (s.thenConstraint == nil && s.elseConstraint == nil) {
+		return
+	}
+	if s.thenConstraint == nil {
+		s.thenConstraint = top()
+	}
+	if s.elseConstraint == nil {
+		s.elseConstraint = top()
+	}
+	s.all.add(s.pos, ast.NewCall(
+		ast.NewIdent("matchIf"),
+		s.ifConstraint,
+		s.thenConstraint,
+		s.elseConstraint,
+	))
+}
+
 func (s *state) comment() *ast.CommentGroup {
 	// Create documentation.
 	doc := strings.TrimSpace(s.title)
@@ -670,12 +728,19 @@ func (s *state) schemaState(n cue.Value, types cue.Kind, idRef []label, isLogica
 	// do multiple passes over the constraints to ensure they are done in order.
 	for pass := 0; pass < numPhases; pass++ {
 		state.processMap(n, func(key string, value cue.Value) {
+			if strings.HasPrefix(key, "x-") {
+				// A keyword starting with a leading x- is clearly
+				// not intended to be a valid keyword, and is explicitly
+				// allowed by OpenAPI. It seems reasonable that
+				// this is not an error even with StrictKeywords enabled.
+				return
+			}
 			// Convert each constraint into a either a value or a functor.
 			c := constraintMap[key]
 			if c == nil {
-				if pass == 0 && s.cfg.Strict {
+				if pass == 0 && s.cfg.StrictKeywords {
 					// TODO: value is not the correct position, albeit close. Fix this.
-					s.warnf(value.Pos(), "unsupported constraint %q", key)
+					s.warnf(value.Pos(), "unknown keyword %q", key)
 				}
 				return
 			}
@@ -683,8 +748,8 @@ func (s *state) schemaState(n cue.Value, types cue.Kind, idRef []label, isLogica
 				return
 			}
 			if !c.versions.contains(state.schemaVersion) {
-				if s.cfg.Strict {
-					s.warnf(value.Pos(), "constraint %q is not supported in JSON schema version %v", key, state.schemaVersion)
+				if s.cfg.StrictKeywords {
+					s.warnf(value.Pos(), "keyword %q is not supported in JSON schema version %v", key, state.schemaVersion)
 				}
 				return
 			}
@@ -810,4 +875,26 @@ func addTag(field ast.Label, tag, value string) *ast.Field {
 func setPos(e ast.Expr, v cue.Value) ast.Expr {
 	ast.SetPos(e, v.Pos())
 	return e
+}
+
+// uint64Value is like v.Uint64 except that it
+// also allows floating point constants, as long
+// as they have no fractional part.
+func uint64Value(v cue.Value) (uint64, error) {
+	n, err := v.Uint64()
+	if err == nil {
+		return n, nil
+	}
+	f, err := v.Float64()
+	if err != nil {
+		return 0, err
+	}
+	intPart, fracPart := math.Modf(f)
+	if fracPart != 0 {
+		return 0, errors.Newf(v.Pos(), "%v is not a whole number", v)
+	}
+	if intPart < 0 || intPart > math.MaxUint64 {
+		return 0, errors.Newf(v.Pos(), "%v is out of bounds", v)
+	}
+	return uint64(intPart), nil
 }

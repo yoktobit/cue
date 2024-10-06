@@ -260,10 +260,6 @@ type Config struct {
 	// to CUE.
 	DataFiles bool
 
-	// StdRoot specifies an alternative directory for standard libraries.
-	// Deprecated: this has no effect.
-	StdRoot string
-
 	// ParseFile is called to read and parse each file when preparing a
 	// package's syntax tree. It must be safe to call ParseFile simultaneously
 	// from multiple goroutines. If ParseFile is nil, the loader will uses
@@ -288,11 +284,9 @@ type Config struct {
 
 	// Registry is used to fetch CUE module dependencies.
 	//
-	// When nil, if the modules experiment is enabled
-	// (CUE_EXPERIMENT=modules), [modconfig.NewRegistry]
-	// will be used to create a registry instance using the
-	// usual cmd/cue conventions for environment variables
-	// (but see the Env field below).
+	// When nil, [modconfig.NewRegistry] will be used to create a
+	// registry instance using the usual cmd/cue conventions for
+	// environment variables (but see the Env field below).
 	//
 	// THIS IS EXPERIMENTAL. API MIGHT CHANGE.
 	Registry modconfig.Registry

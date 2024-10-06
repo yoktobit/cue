@@ -132,16 +132,27 @@ issue641: {
 		}
 	}
 }
+-- issue3406.cue --
+issue3406: {
+	out: d & { d }
+	d: kind: "foo" | "bar"
+	d: { kind: "foo" } | { kind: "bar" }
+}
+-- issue3411.cue --
+issue3411: {
+	x: y?: [...string]
+	x: {y: ["foo"]} | *{y: ["bar"]}
+}
 -- out/eval/stats --
 Leaks:  0
-Freed:  304
-Reused: 292
+Freed:  355
+Reused: 343
 Allocs: 12
 Retain: 0
 
-Unifications: 147
-Conjuncts:    564
-Disjuncts:    304
+Unifications: 164
+Conjuncts:    647
+Disjuncts:    355
 -- out/evalalpha --
 Errors:
 f.name: conflicting values "int" and "str":
@@ -300,6 +311,29 @@ Result:
         }
       }
     }
+  }
+  issue3406: (struct){
+    out: (struct){ |((struct){
+        kind: (string){ "foo" }
+      }, (struct){
+        kind: (string){ "bar" }
+      }) }
+    d: (struct){ |((struct){
+        kind: (string){ "foo" }
+      }, (struct){
+        kind: (string){ "bar" }
+      }) }
+  }
+  issue3411: (struct){
+    x: (struct){ |(*(struct){
+        y: (#list){
+          0: (string){ "bar" }
+        }
+      }, (struct){
+        y: (#list){
+          0: (string){ "foo" }
+        }
+      }) }
   }
 }
 -- diff/-out/evalalpha<==>+out/eval --
@@ -530,6 +564,29 @@ Result:
       }
     }
   }
+  issue3406: (struct){
+    out: (struct){ |((struct){
+        kind: (string){ "foo" }
+      }, (struct){
+        kind: (string){ "bar" }
+      }) }
+    d: (struct){ |((struct){
+        kind: (string){ "foo" }
+      }, (struct){
+        kind: (string){ "bar" }
+      }) }
+  }
+  issue3411: (struct){
+    x: (struct){ |(*(struct){
+        y: (#list){
+          0: (string){ "bar" }
+        }
+      }, (struct){
+        y: (#list){
+          0: (string){ "foo" }
+        }
+      }) }
+  }
 }
 -- out/compile --
 --- in.cue
@@ -714,5 +771,40 @@ Result:
         })
       })
     }
+  }
+}
+--- issue3406.cue
+{
+  issue3406: {
+    out: (〈0;d〉 & {
+      〈1;d〉
+    })
+    d: {
+      kind: ("foo"|"bar")
+    }
+    d: ({
+      kind: "foo"
+    }|{
+      kind: "bar"
+    })
+  }
+}
+--- issue3411.cue
+{
+  issue3411: {
+    x: {
+      y?: [
+        ...string,
+      ]
+    }
+    x: ({
+      y: [
+        "foo",
+      ]
+    }|*{
+      y: [
+        "bar",
+      ]
+    })
   }
 }

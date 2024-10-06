@@ -69,10 +69,7 @@ func (e Encoder) Close() error {
 
 // NewEncoder writes content to the file with the given specification.
 func NewEncoder(ctx *cue.Context, f *build.File, cfg *Config) (*Encoder, error) {
-	w, close, err := writer(f, cfg)
-	if err != nil {
-		return nil, err
-	}
+	w, close := writer(f, cfg)
 	e := &Encoder{
 		ctx:   ctx,
 		cfg:   cfg,
@@ -290,16 +287,16 @@ func (e *Encoder) encodeFile(f *ast.File, interpret func(cue.Value) (*ast.File, 
 	return e.encValue(v)
 }
 
-func writer(f *build.File, cfg *Config) (_ io.Writer, close func() error, err error) {
+func writer(f *build.File, cfg *Config) (_ io.Writer, close func() error) {
 	if cfg.Out != nil {
-		return cfg.Out, nil, nil
+		return cfg.Out, nil
 	}
 	path := f.Filename
 	if path == "-" {
 		if cfg.Stdout == nil {
-			return os.Stdout, nil, nil
+			return os.Stdout, nil
 		}
-		return cfg.Stdout, nil, nil
+		return cfg.Stdout, nil
 	}
 	// Delay opening the file until we can write it to completion.
 	// This prevents clobbering the file in case of a crash.
@@ -310,7 +307,7 @@ func writer(f *build.File, cfg *Config) (_ io.Writer, close func() error, err er
 			// Swap O_EXCL for O_TRUNC to allow replacing an entire existing file.
 			mode = os.O_WRONLY | os.O_CREATE | os.O_TRUNC
 		}
-		f, err := os.OpenFile(path, mode, 0o644)
+		f, err := os.OpenFile(path, mode, 0o666)
 		if err != nil {
 			if errors.Is(err, fs.ErrExist) {
 				return errors.Wrapf(fs.ErrExist, token.NoPos, "error writing %q", path)
@@ -323,5 +320,5 @@ func writer(f *build.File, cfg *Config) (_ io.Writer, close func() error, err er
 		}
 		return err
 	}
-	return b, fn, nil
+	return b, fn
 }

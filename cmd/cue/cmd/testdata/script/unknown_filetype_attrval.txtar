@@ -1,0 +1,9 @@
+# Check that we cannot specify an arbitary unknown key-value pair
+# in a filetype.
+
+! exec cue export cue+foo=bar: x.cue
+cmp stderr expect-stderr
+-- x.cue --
+true
+-- expect-stderr --
+unknown filetype foo

@@ -36,7 +36,6 @@ import (
 	"cuelang.org/go/internal"
 	"cuelang.org/go/internal/core/adt"
 	"cuelang.org/go/internal/core/compile"
-	internaljson "cuelang.org/go/internal/encoding/json"
 	"cuelang.org/go/internal/types"
 )
 
@@ -71,7 +70,8 @@ func toValue(e adt.Expr) adt.Value {
 func compileExpr(ctx *adt.OpContext, expr ast.Expr) adt.Value {
 	c, err := compile.Expr(nil, ctx, pkgID(), expr)
 	if err != nil {
-		return &adt.Bottom{Err: errors.Promote(err, "compile")}
+		return &adt.Bottom{
+			Err: errors.Promote(err, "compile")}
 	}
 	return adt.Resolve(ctx, c)
 }
@@ -183,15 +183,6 @@ func isOmitEmpty(f *reflect.StructField) bool {
 	return isOmitEmpty
 }
 
-// parseJSON parses JSON into a CUE value. b must be valid JSON.
-func parseJSON(ctx *adt.OpContext, b []byte) adt.Value {
-	expr, err := parser.ParseExpr("json", b)
-	if err != nil {
-		panic(err) // cannot happen
-	}
-	return compileExpr(ctx, expr)
-}
-
 func GoValueToExpr(ctx *adt.OpContext, nilIsTop bool, x interface{}) adt.Expr {
 	e := convertRec(ctx, nilIsTop, x)
 	if e == nil {
@@ -286,19 +277,19 @@ func convertRec(ctx *adt.OpContext, nilIsTop bool, x interface{}) adt.Value {
 		if err != nil {
 			return ctx.AddErr(errors.Promote(err, "json.Marshaler"))
 		}
-
-		return parseJSON(ctx, b)
+		expr, err := parser.ParseExpr("json", b)
+		if err != nil {
+			panic(err) // cannot happen
+		}
+		return compileExpr(ctx, expr)
 
 	case encoding.TextMarshaler:
 		b, err := v.MarshalText()
 		if err != nil {
 			return ctx.AddErr(errors.Promote(err, "encoding.TextMarshaler"))
 		}
-		b, err = internaljson.Marshal(string(b))
-		if err != nil {
-			return ctx.AddErr(errors.Promote(err, "json"))
-		}
-		return parseJSON(ctx, b)
+		s, _ := unicode.UTF8.NewEncoder().String(string(b))
+		return &adt.String{Src: ctx.Source(), Str: s}
 
 	case error:
 		var errs errors.Error

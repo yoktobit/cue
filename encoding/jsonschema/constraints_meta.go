@@ -34,7 +34,11 @@ func constraintID(key string, n cue.Value, s *state) {
 	}
 
 	if u.Fragment != "" {
-		if s.cfg.Strict {
+		// TODO do not use StrictFeatures for this. The specification is clear:
+		// before 2019-09, IDs could contain plain-name fragments;
+		// (see https://json-schema.org/draft-07/draft-handrews-json-schema-01#rfc.section.5)
+		// afterwards, $anchor was reserved for that purpose.
+		if s.cfg.StrictFeatures {
 			s.errf(n, "$id URI may not contain a fragment")
 		}
 		return
@@ -58,4 +62,10 @@ func constraintSchema(key string, n cue.Value, s *state) {
 	}
 	s.schemaVersionPresent = true
 	s.schemaVersion = sv
+}
+
+func constraintTODO(key string, n cue.Value, s *state) {
+	if s.cfg.StrictFeatures {
+		s.errf(n, `keyword %q not yet implemented`, key)
+	}
 }

@@ -16,6 +16,7 @@ package jsonschema
 
 import (
 	"fmt"
+	"strings"
 )
 
 //go:generate go run golang.org/x/tools/cmd/stringer -type=Version -linecomment
@@ -31,12 +32,19 @@ const (
 	VersionDraft2019_09 // https://json-schema.org/draft/2019-09/schema
 	VersionDraft2020_12 // https://json-schema.org/draft/2020-12/schema
 
-	numVersions // unknown
+	numJSONSchemaVersions // unknown
+
+	// Note: OpenAPI stands alone: it's not in the regular JSON Schema lineage.
+	VersionOpenAPI // OpenAPI 3.0
 )
+
+const openAPI = versionSet(1 << VersionOpenAPI)
 
 type versionSet int
 
-const allVersions = versionSet(1<<numVersions-1) &^ (1 << VersionUnknown)
+// allVersions includes all regular versions of JSON Schema.
+// It does not include OpenAPI v3.0
+const allVersions = versionSet(1<<numJSONSchemaVersions-1) &^ (1 << VersionUnknown)
 
 // contains reports whether m contains the version v.
 func (m versionSet) contains(v Version) bool {
@@ -67,10 +75,15 @@ func vto(v Version) versionSet {
 
 // ParseVersion parses a version URI that defines a JSON Schema version.
 func ParseVersion(sv string) (Version, error) {
+	// Ignore a trailing empty fragment: it's a common error
+	// to omit or supply such a fragment and it's not entirely
+	// clear whether comparison should or should not
+	// be sensitive to its presence or absence.
+	sv = strings.TrimSuffix(sv, "#")
 	// If this linear search is ever a performance issue, we could
 	// build a map, but it doesn't seem worthwhile for now.
-	for i := Version(1); i < numVersions; i++ {
-		if sv == i.String() {
+	for i := Version(1); i < numJSONSchemaVersions; i++ {
+		if sv == strings.TrimSuffix(i.String(), "#") {
 			return i, nil
 		}
 	}

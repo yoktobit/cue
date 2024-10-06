@@ -86,6 +86,11 @@ type Bottom struct {
 	ForCycle     bool // this is a for cycle
 	// Value holds the computed value so far in case
 	Value Value
+
+	// Node marks the node at which an error occurred. This is used to
+	// determine the package to which an error belongs.
+	// TODO: use a more precise mechanism for tracking the package.
+	Node *Vertex
 }
 
 func (x *Bottom) Source() ast.Node        { return x.Src }
@@ -131,7 +136,8 @@ func isIncomplete(v *Vertex) bool {
 //
 // If x is not already an error, the value is recorded in the error for
 // reference.
-func (v *Vertex) AddChildError(recursive *Bottom) {
+func (n *nodeContext) AddChildError(recursive *Bottom) {
+	v := n.node
 	v.ChildErrors = CombineErrors(nil, v.ChildErrors, recursive)
 	if recursive.IsIncomplete() {
 		return
@@ -139,13 +145,14 @@ func (v *Vertex) AddChildError(recursive *Bottom) {
 	x := v.BaseValue
 	err, _ := x.(*Bottom)
 	if err == nil {
-		v.BaseValue = &Bottom{
+		n.setBaseValue(&Bottom{
 			Code:         recursive.Code,
 			Value:        v,
 			HasRecursive: true,
 			ChildError:   true,
 			Err:          recursive.Err,
-		}
+			Node:         n.node,
+		})
 		return
 	}
 
@@ -154,7 +161,7 @@ func (v *Vertex) AddChildError(recursive *Bottom) {
 		err.Code = recursive.Code
 	}
 
-	v.BaseValue = err
+	n.setBaseValue(err)
 }
 
 // CombineErrors combines two errors that originate at the same Vertex.
@@ -228,6 +235,7 @@ func NewRequiredNotPresentError(ctx *OpContext, v *Vertex) *Bottom {
 	b := &Bottom{
 		Code: IncompleteError,
 		Err:  err,
+		Node: v,
 	}
 	ctx.PopArc(saved)
 	return b
@@ -274,6 +282,7 @@ func (v *Vertex) reportFieldError(c *OpContext, pos token.Pos, f Feature, intMsg
 	b := &Bottom{
 		Code: code,
 		Err:  err,
+		Node: v,
 	}
 	// TODO: yield failure
 	c.AddBottom(b) // TODO: unify error mechanism.

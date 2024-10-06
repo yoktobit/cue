@@ -90,7 +90,13 @@ func (n *nodeContext) scheduleConjunct(c Conjunct, id CloseInfo) {
 		}
 
 		if id.cc.src != n.node {
-			panic("inconsistent state: nodes differ")
+			// TODO(#3406): raise a panic again.
+			//		out: d & { d }
+			//		d: {
+			//			kind: "foo" | "bar"
+			//			{ kind: "foo" } | { kind: "bar" }
+			//		}
+			// panic("inconsistent state: nodes differ")
 		}
 	default:
 
@@ -175,7 +181,7 @@ func (n *nodeContext) scheduleConjunct(c Conjunct, id CloseInfo) {
 		n.unshare()
 
 		// At this point we known we have at least an empty list.
-		n.updateCyclicStatus(id)
+		n.updateCyclicStatusV3(id)
 
 		env := &Environment{
 			Up:     env,
@@ -185,6 +191,8 @@ func (n *nodeContext) scheduleConjunct(c Conjunct, id CloseInfo) {
 
 	case *DisjunctionExpr:
 		n.unshare()
+		id := id
+		id.setOptionalV3(n)
 
 		// TODO(perf): reuse envDisjunct values so that we can also reuse the
 		// disjunct slice.
@@ -228,7 +236,7 @@ func (n *nodeContext) scheduleConjunct(c Conjunct, id CloseInfo) {
 func (n *nodeContext) scheduleStruct(env *Environment,
 	s *StructLit,
 	ci CloseInfo) {
-	n.updateCyclicStatus(ci)
+	n.updateCyclicStatusV3(ci)
 
 	// NOTE: This is a crucial point in the code:
 	// Unification dereferencing happens here. The child nodes are set to
@@ -293,6 +301,11 @@ loop2:
 				n.aStruct = s
 				n.aStructID = ci
 			}
+			ci := ci
+			if x.ArcType == ArcOptional {
+				ci.setOptionalV3(n)
+			}
+
 			fc := MakeConjunct(childEnv, x, ci)
 			// fc.CloseInfo.cc = nil // TODO: should we add this?
 			n.insertArc(x.Label, x.ArcType, fc, ci, true)
@@ -322,6 +335,8 @@ loop2:
 			n.scheduleTask(handleDynamic, childEnv, x, ci)
 
 		case *BulkOptionalField:
+			ci := ci
+			ci.setOptionalV3(n)
 
 			// All do not depend on each other, so can be added at once.
 			n.scheduleTask(handlePatternConstraint, childEnv, x, ci)
@@ -531,7 +546,7 @@ func (n *nodeContext) addNotify2(v *Vertex, c CloseInfo) []receiver {
 // Literal conjuncts
 
 func (n *nodeContext) insertValueConjunct(env *Environment, v Value, id CloseInfo) {
-	n.updateCyclicStatus(id)
+	n.updateCyclicStatusV3(id)
 
 	ctx := n.ctx
 
@@ -565,7 +580,7 @@ func (n *nodeContext) insertValueConjunct(env *Environment, v Value, id CloseInf
 			panic(fmt.Sprintf("invalid type %T", x.BaseValue))
 
 		case *ListMarker:
-			n.updateCyclicStatus(id)
+			n.updateCyclicStatusV3(id)
 
 			// TODO: arguably we know now that the type _must_ be a list.
 			n.scheduleTask(handleListVertex, env, x, id)
@@ -609,6 +624,9 @@ func (n *nodeContext) insertValueConjunct(env *Environment, v Value, id CloseInf
 	case *Disjunction:
 		// TODO(perf): reuse envDisjunct values so that we can also reuse the
 		// disjunct slice.
+		id := id
+		id.setOptionalV3(n)
+
 		d := envDisjunct{
 			env:     env,
 			cloneID: id,
@@ -713,12 +731,16 @@ func (n *nodeContext) insertValueConjunct(env *Environment, v Value, id CloseInf
 		}
 		n.checks = append(n.checks, x)
 
-		// We use hasTop here to ensure that validation considers the ultimate
-		// value of embedded validators, rather than assuming that the struct in
-		// which an expression is embedded is always a struct.
-		// TODO(validatorType): a more precise alternative would be to determine
-		// the basic type of the expression and schedule a conjunct for that.
-		n.hasTop = true
+		// We use set the type of the validator argument here to ensure that
+		// validation considers the ultimate value of embedded validators,
+		// rather than assuming that the struct in which an expression is
+		// embedded is always a struct.
+		// TODO(validatorType): get rid of setting n.hasTop here.
+		k := x.Kind()
+		if k == TopKind {
+			n.hasTop = true
+		}
+		n.updateNodeType(k, x, id)
 
 	case *Vertex:
 	// handled above.

@@ -17,7 +17,7 @@ package github
 import (
 	"list"
 
-	"github.com/SchemaStore/schemastore/src/schemas/json"
+	"github.com/cue-tmp/jsonschema-pub/exp1/githubactions"
 )
 
 // The trybot workflow.
@@ -43,6 +43,11 @@ workflows: trybot: _repo.bashWorkflow & {
 				_
 			}
 
+			let installGo = _repo.installGo & {
+				#setupGo: with: "go-version": goVersionVal
+				_
+			}
+
 			// Only run the trybot workflow if we have the trybot trailer, or
 			// if we have no special trailers. Note this condition applies
 			// after and in addition to the "on" condition above.
@@ -51,9 +56,7 @@ workflows: trybot: _repo.bashWorkflow & {
 			steps: [
 				for v in _repo.checkoutCode {v},
 
-				_repo.installGo & {
-					with: "go-version": goVersionVal
-				},
+				for v in installGo {v},
 
 				// cachePre must come after installing Node and Go, because the cache locations
 				// are established by running each tool.
@@ -64,7 +67,6 @@ workflows: trybot: _repo.bashWorkflow & {
 					// so we only need to run them on one of the matrix jobs.
 					if: _isLatestLinux
 				},
-				_goGenerate,
 				_goTest & {
 					if: "\(_repo.isProtectedBranch) || !\(_isLatestLinux)"
 				},
@@ -74,6 +76,13 @@ workflows: trybot: _repo.bashWorkflow & {
 				_goTestWasm,
 				for v in _e2eTestSteps {v},
 				_goCheck,
+				_checkTags,
+				// Run code generation towards the very end, to ensure it succeeds and makes no changes.
+				// Note that doing this before any Go tests or checks may lead to test cache misses,
+				// as Go uses modtimes to approximate whether files have been modified.
+				// Moveover, Go test failures on CI due to changed generated code are very confusing
+				// as the user might not notice that checkGitClean is also failing towards the end.
+				_goGenerate,
 				_repo.checkGitClean,
 			]
 		}
@@ -99,20 +108,20 @@ workflows: trybot: _repo.bashWorkflow & {
 	// work.
 	_isLatestLinux: "(\(goVersion) == '\(_repo.latestGo)' && \(matrixRunner) == '\(_repo.linuxMachine)')"
 
-	_goGenerate: json.#step & {
+	_goGenerate: _registryReadOnlyAccessStep & {
 		name: "Generate"
-		run:  "go generate ./..."
+		_run: "go generate ./..."
 		// The Go version corresponds to the precise version specified in
 		// the matrix. Skip windows for now until we work out why re-gen is flaky
 		if: _isLatestLinux
 	}
 
-	_goTest: json.#step & {
+	_goTest: githubactions.#Step & {
 		name: "Test"
 		run:  "go test ./..."
 	}
 
-	_e2eTestSteps: [... json.#step & {
+	_e2eTestSteps: [... githubactions.#Step & {
 		// The end-to-end tests require a github token secret and are a bit slow,
 		// so we only run them on pushes to protected branches and on one
 		// environment in the source repo.
@@ -134,12 +143,12 @@ workflows: trybot: _repo.bashWorkflow & {
 		},
 		{
 			name: "End-to-end test"
-			// The secret is the fine-grained access token "cue-lang/cue ci e2e for modules-testing"
-			// owned by the porcuepine bot account with read+write access to repo administration and code
-			// on the entire cue-labs-modules-testing org. Note that porcuepine is also an org admin,
-			// since otherwise the repo admin access to create and delete repos does not work.
 			env: {
-				CUE_TEST_LOGINS: "${{ secrets.E2E_CUE_LOGINS }}"
+				// E2E_PORCUEPINE_CUE_LOGINS is the logins.json resulting from doing a `cue login`
+				// with registry.cue.works as the GitHub porcuepine user.
+				// TODO(mvdan): remove the E2E_CUE_LOGINS secret once all uses are gone,
+				// i.e. once the release branch for v0.10 is deleted.
+				CUE_TEST_LOGINS: "${{ secrets.E2E_PORCUEPINE_CUE_LOGINS }}"
 			}
 			// Our regular tests run with both `go test ./...` and `go test -race ./...`.
 			// The end-to-end tests should only be run once, given the slowness and API rate limits.
@@ -152,7 +161,7 @@ workflows: trybot: _repo.bashWorkflow & {
 		},
 	]
 
-	_goCheck: json.#step & {
+	_goCheck: githubactions.#Step & {
 		// These checks can vary between platforms, as different code can be built
 		// based on GOOS and GOARCH build tags.
 		// However, CUE does not have any such build tags yet, and we don't use
@@ -164,7 +173,7 @@ workflows: trybot: _repo.bashWorkflow & {
 		//
 		// TODO: consider adding more checks as per https://github.com/golang/go/issues/42119.
 		if:   "\(_isLatestLinux)"
-		name: "Check"
+		name: "Go checks"
 		run: """
 			go vet ./...
 			go mod tidy
@@ -172,13 +181,39 @@ workflows: trybot: _repo.bashWorkflow & {
 			"""
 	}
 
-	_goTestRace: json.#step & {
+	_checkTags: githubactions.#Step & {
+		// Ensure that GitHub and Gerrit agree on the full list of available tags.
+		// This way, if there is any discrepancy, we will get a useful go-cmp diff.
+		//
+		// We use `git ls-remote` to list all tags from each remote git repository
+		// because it does not depend on custom REST API endpoints and is very fast.
+		// Note that it sorts tag names as strings, which is not the best, but works OK.
+		if:   "\(_isLatestLinux)"
+		name: "Check all git tags are available"
+		run: """
+			cd $(mktemp -d)
+
+			git ls-remote --tags https://github.com/cue-lang/cue >github.txt
+			echo "GitHub tags:"
+			sed 's/^/    /' github.txt
+
+			git ls-remote --tags https://review.gerrithub.io/cue-lang/cue >gerrit.txt
+
+			if ! diff -u github.txt gerrit.txt; then
+				echo "GitHub and Gerrit do not agree on the list of tags!"
+				echo "Did you forget about refs/attic branches? https://github.com/cue-lang/cue/wiki/Notes-for-project-maintainers"
+				exit 1
+			fi
+			"""
+	}
+
+	_goTestRace: githubactions.#Step & {
 		name: "Test with -race"
 		env: GORACE: "atexit_sleep_ms=10" // Otherwise every Go package being tested sleeps for 1s; see https://go.dev/issues/20364.
 		run: "go test -race ./..."
 	}
 
-	_goTestWasm: json.#step & {
+	_goTestWasm: githubactions.#Step & {
 		name: "Test with -tags=cuewasm"
 		// The wasm interpreter is only bundled into cmd/cue with the cuewasm build tag.
 		// Test the related packages with the build tag enabled as well.

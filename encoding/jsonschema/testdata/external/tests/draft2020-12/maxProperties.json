@@ -57,15 +57,13 @@
 			"$schema": "https://json-schema.org/draft/2020-12/schema",
 			"maxProperties": 2.0
 		},
-		"skip": "extract error: invalid uint",
 		"tests": [
 			{
 				"description": "shorter is valid",
 				"data": {
 					"foo": 1
 				},
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "too long is invalid",
@@ -74,8 +72,7 @@
 					"bar": 2,
 					"baz": 3
 				},
-				"valid": false,
-				"skip": "could not compile schema"
+				"valid": false
 			}
 		]
 	},

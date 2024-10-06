@@ -51,6 +51,10 @@ func Extract(data cue.InstanceOrValue, cfg *Config) (f *ast.File, err error) {
 	if cfg.DefaultVersion == VersionUnknown {
 		cfg.DefaultVersion = VersionDraft7
 	}
+	if cfg.Strict {
+		cfg.StrictKeywords = true
+		cfg.StrictFeatures = true
+	}
 	d := &decoder{
 		cfg:          cfg,
 		mapURLErrors: make(map[string]bool),
@@ -93,18 +97,27 @@ type Config struct {
 	Map func(pos token.Pos, path []string) ([]ast.Label, error)
 
 	// MapURL maps a URL reference as found in $ref to
-	// an import path for a package.
+	// an import path for a package and a path within that package.
 	// If this is nil, [DefaultMapURL] will be used.
-	MapURL func(u *url.URL) (importPath string, err error)
+	MapURL func(u *url.URL) (importPath string, path cue.Path, err error)
 
 	// TODO: configurability to make it compatible with OpenAPI, such as
 	// - locations of definitions: #/components/schemas, for instance.
 	// - selection and definition of formats
 	// - documentation hooks.
 
-	// Strict reports an error for unsupported features, rather than ignoring
-	// them.
+	// Strict reports an error for unsupported features and keywords,
+	// rather than ignoring them. When true, this is equivalent to
+	// setting both StrictFeatures and StrictKeywords to true.
 	Strict bool
+
+	// StrictFeatures reports an error for features that are known
+	// to be unsupported.
+	StrictFeatures bool
+
+	// StrictKeywords reports an error when unknown keywords
+	// are encountered.
+	StrictKeywords bool
 
 	// DefaultVersion holds the default schema version to use
 	// when no $schema field is present. If it is zero, [DefaultVersion]

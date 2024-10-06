@@ -27,7 +27,10 @@
 					"quux": "boom"
 				},
 				"valid": false,
-				"skip": "unexpected success"
+				"skip": {
+					"v2": "unexpected success",
+					"v3": "unexpected success"
+				}
 			},
 			{
 				"description": "ignores arrays",
@@ -80,7 +83,10 @@
 					"élmény": 2
 				},
 				"valid": false,
-				"skip": "unexpected success"
+				"skip": {
+					"v2": "unexpected success",
+					"v3": "unexpected success"
+				}
 			}
 		]
 	},

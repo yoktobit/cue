@@ -83,7 +83,11 @@ func (c *OpContext) evaluate(v *Vertex, r Resolver, state combinedFlags) Value {
 				for ; v.Parent != nil && v.ArcType == ArcPending; v = v.Parent {
 				}
 				err := c.Newf("cycle with field %v", r)
-				b := &Bottom{Code: CycleError, Err: err}
+				b := &Bottom{
+					Code: CycleError,
+					Err:  err,
+					Node: v,
+				}
 				v.setValue(c, v.status, b)
 				return b
 				// TODO: use this instead, as is usual for incomplete errors,
@@ -601,7 +605,7 @@ func (n *nodeContext) postDisjunct(state vertexStatus) {
 //
 // Before it does this, it also checks whether n is of another incompatible
 // type, like struct. This prevents validators from being inadvertently set.
-// TODO: optimize this function for new implementation.
+// TODO(evalv3): optimize this function for new implementation.
 func (n *nodeContext) validateValue(state vertexStatus) {
 	ctx := n.ctx
 
@@ -612,7 +616,38 @@ func (n *nodeContext) validateValue(state vertexStatus) {
 	if n.aStruct != nil {
 		markStruct = true
 	} else if len(n.node.Structs) > 0 {
+		// TODO: do something more principled here.
+		// Here we collect evidence that a value is a struct. If a struct has
+		// an embedding, it may evaluate to an embedded scalar value, in which
+		// case it is not a struct. Right now this is tracked at the node level,
+		// but it really should be at the struct level. For instance:
+		//
+		// 		A: matchN(1, [>10])
+		// 		A: {
+		// 			if true {c: 1}
+		// 		}
+		//
+		// Here A is marked as Top by matchN. The other struct also has an
+		// embedding (the comprehension), and thus does not force it either.
+		// So the resulting kind is top, not struct.
+		// As an approximation, we at least mark the node as a struct if it has
+		// any regular fields.
 		markStruct = n.kind&StructKind != 0 && !n.hasTop
+		for _, a := range n.node.Arcs {
+			// TODO(spec): we generally allow optional fields alongside embedded
+			// scalars. We probably should not. Either way this is not entirely
+			// accurate, as a Pending arc may still be optional. We should
+			// collect the arcType noted in adt.Comprehension in a nodeContext
+			// as well so that we know what the potential arc of this node may
+			// be.
+			//
+			// TODO(evalv3): even better would be to ensure that all
+			// comprehensions are done before calling this.
+			if a.Label.IsRegular() && a.ArcType != ArcOptional {
+				markStruct = true
+				break
+			}
+		}
 	}
 	v := n.node.DerefValue().Value()
 	if n.node.BaseValue == nil && markStruct {
@@ -823,7 +858,7 @@ func (n *nodeContext) completeArcs(state vertexStatus) {
 				}
 
 				if err := a.Bottom(); err != nil {
-					n.node.AddChildError(err)
+					n.AddChildError(err)
 				}
 			}
 
@@ -872,6 +907,7 @@ func (n *nodeContext) completeArcs(state vertexStatus) {
 				n.node.AddErr(ctx, &Bottom{
 					Src:  c.expr.Source(),
 					Code: CycleError,
+					Node: n.node,
 					Err: ctx.NewPosf(pos(c.expr),
 						"circular dependency in evaluation of conditionals: %v changed after evaluation",
 						ctx.Str(c.expr)),
@@ -1085,9 +1121,10 @@ type nodeContextState struct {
 
 	// State info
 
-	hasTop      bool
-	hasCycle    bool // has conjunct with structural cycle
-	hasNonCycle bool // has conjunct without structural cycle
+	hasTop       bool
+	hasCycle     bool // has conjunct with structural cycle
+	hasNonCycle  bool // has material conjuncts without structural cycle
+	hasNonCyclic bool // has non-cyclic conjuncts at start of field processing
 
 	isShared      bool      // set if we are currently structure sharing.
 	noSharing     bool      // set if structure sharing is not allowed
@@ -1567,7 +1604,10 @@ func (n *nodeContext) addErr(err errors.Error) {
 	n.assertInitialized()
 
 	if err != nil {
-		n.addBottom(&Bottom{Err: err})
+		n.addBottom(&Bottom{
+			Err:  err,
+			Node: n.node,
+		})
 	}
 }
 
@@ -1976,7 +2016,12 @@ func (n *nodeContext) addValueConjunct(env *Environment, v Value, id CloseInfo) 
 		}
 		n.updateNodeType(x.Kind(), x, id)
 		n.checks = append(n.checks, x)
-		n.hasTop = true // TODO(validatorType): see namesake TODO in conjunct.go.
+		// TODO(validatorType): see namesake TODO in conjunct.go.
+		k := x.Kind()
+		if k == TopKind {
+			n.hasTop = true
+		}
+		n.updateNodeType(k, x, id)
 
 	case *Vertex:
 	// handled above.
@@ -2152,6 +2197,7 @@ func (n *nodeContext) insertField(f Feature, mode ArcType, x Conjunct) *Vertex {
 	default:
 		n.addBottom(&Bottom{
 			Code: IncompleteError,
+			Node: n.node,
 			Err: ctx.NewPosf(pos(x.Field()),
 				"cannot add field %s: was already used",
 				f.SelectorString(ctx)),

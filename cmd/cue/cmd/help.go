@@ -58,10 +58,12 @@ func newHelpCmd(c *Command) *cobra.Command {
 				//	["cmd", "mycmd"]
 				//	["cmd", "mycmd", "./mypkg"]
 				//
-				// We want to skip the first two arguments in pkgArgs.
-				pkgArgs := args[1:]
-				if len(pkgArgs) > 0 {
-					pkgArgs = pkgArgs[1:]
+				// In the third case, we want to load ["./mypkg"]
+				// and we want to look up the help for ["cmd", "mycmd"].
+				var pkgArgs []string
+				if len(args) > 2 {
+					pkgArgs = args[2:]
+					args = args[:2]
 				}
 
 				tools, err := buildTools(c, pkgArgs)
@@ -312,9 +314,6 @@ If an environment variable is unset or empty, sensible default setting is used.
 	CUE_EXPERIMENT
 		Comma-separated list of experiment flags to enable or disable:
 
-		modules (default true)
-			Enable support for the Modules and package management proposal
-			as described in https://cuelang.org/discussion/2939.
 		evalv3
 			Enable the new CUE evaluator, addressing performance issues
 			and bringing a better disjunction algorithm.
@@ -611,6 +610,20 @@ defaults as requested.
                 not require any evaluation.
     graph       Like data, but allow references.
     schema      Export data and definitions.
+
+The following tags are only valid in combination with other tags,
+and influence the functioning of the codec. The tag they are
+valid with is mentioned in parentheses at the end.
+
+    strictFeatures	report errors for lossy mappings. Enabled by default (jsonschema)
+    strictKeywords	report errors for unknown keywords (jsonschema)
+    strict			report errors for either of the above (jsonschema)
+
+The above flags also accept a boolean flag value (e.g. true, 1, false, 0)
+to set them explicitly. For example, to ignore unimplemented JSON Schema
+features rather than giving an error:
+
+	jsonschema+strictFeatures=0
 
 Many commands also support the --out and --outfile/-o flags.
 The --out flag specifies the output type using a qualifier

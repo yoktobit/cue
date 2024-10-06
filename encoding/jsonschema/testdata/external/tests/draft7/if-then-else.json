@@ -6,19 +6,16 @@
 				"const": 0
 			}
 		},
-		"skip": "extract error: unsupported constraint \"if\"",
 		"tests": [
 			{
 				"description": "valid when valid against lone if",
 				"data": 0,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "valid when invalid against lone if",
 				"data": "hello",
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			}
 		]
 	},
@@ -29,19 +26,16 @@
 				"const": 0
 			}
 		},
-		"skip": "extract error: unsupported constraint \"then\"",
 		"tests": [
 			{
 				"description": "valid when valid against lone then",
 				"data": 0,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "valid when invalid against lone then",
 				"data": "hello",
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			}
 		]
 	},
@@ -52,19 +46,16 @@
 				"const": 0
 			}
 		},
-		"skip": "extract error: unsupported constraint \"else\"",
 		"tests": [
 			{
 				"description": "valid when valid against lone else",
 				"data": 0,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "valid when invalid against lone else",
 				"data": "hello",
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			}
 		]
 	},
@@ -78,25 +69,21 @@
 				"minimum": -10
 			}
 		},
-		"skip": "extract error: unsupported constraint \"if\" (and 1 more errors)",
 		"tests": [
 			{
 				"description": "valid through then",
 				"data": -1,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "invalid through then",
 				"data": -100,
-				"valid": false,
-				"skip": "could not compile schema"
+				"valid": false
 			},
 			{
 				"description": "valid when if test fails",
 				"data": 3,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			}
 		]
 	},
@@ -110,25 +97,21 @@
 				"multipleOf": 2
 			}
 		},
-		"skip": "extract error: unsupported constraint \"if\" (and 1 more errors)",
 		"tests": [
 			{
 				"description": "valid when if test passes",
 				"data": -1,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "valid through else",
 				"data": 4,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "invalid through else",
 				"data": 3,
-				"valid": false,
-				"skip": "could not compile schema"
+				"valid": false
 			}
 		]
 	},
@@ -145,31 +128,26 @@
 				"multipleOf": 2
 			}
 		},
-		"skip": "extract error: unsupported constraint \"if\" (and 2 more errors)",
 		"tests": [
 			{
 				"description": "valid through then",
 				"data": -1,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "invalid through then",
 				"data": -100,
-				"valid": false,
-				"skip": "could not compile schema"
+				"valid": false
 			},
 			{
 				"description": "valid through else",
 				"data": 4,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "invalid through else",
 				"data": 3,
-				"valid": false,
-				"skip": "could not compile schema"
+				"valid": false
 			}
 		]
 	},
@@ -194,19 +172,16 @@
 				}
 			]
 		},
-		"skip": "extract error: unsupported constraint \"if\" (and 2 more errors)",
 		"tests": [
 			{
 				"description": "valid, but would have been invalid through then",
 				"data": -100,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "valid, but would have been invalid through else",
 				"data": 3,
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			}
 		]
 	},
@@ -221,19 +196,16 @@
 				"const": "else"
 			}
 		},
-		"skip": "extract error: unsupported constraint \"if\" (and 2 more errors)",
 		"tests": [
 			{
 				"description": "boolean schema true in if always chooses the then path (valid)",
 				"data": "then",
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "boolean schema true in if always chooses the then path (invalid)",
 				"data": "else",
-				"valid": false,
-				"skip": "could not compile schema"
+				"valid": false
 			}
 		]
 	},
@@ -248,19 +220,28 @@
 				"const": "else"
 			}
 		},
-		"skip": "extract error: unsupported constraint \"if\" (and 2 more errors)",
+		"skip": {
+			"v2": "extract error: cannot compile resulting schema: explicit error (_|_ literal) in source:\n    generated.cue:2:9\n",
+			"v3": "extract error: cannot compile resulting schema: explicit error (_|_ literal) in source:\n    generated.cue:2:9\n"
+		},
 		"tests": [
 			{
 				"description": "boolean schema false in if always chooses the else path (invalid)",
 				"data": "then",
 				"valid": false,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			},
 			{
 				"description": "boolean schema false in if always chooses the else path (valid)",
 				"data": "else",
 				"valid": true,
-				"skip": "could not compile schema"
+				"skip": {
+					"v2": "could not compile schema",
+					"v3": "could not compile schema"
+				}
 			}
 		]
 	},
@@ -277,31 +258,26 @@
 				"maxLength": 4
 			}
 		},
-		"skip": "extract error: unsupported constraint \"then\" (and 2 more errors)",
 		"tests": [
 			{
 				"description": "yes redirects to then and passes",
 				"data": "yes",
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "other redirects to else and passes",
 				"data": "other",
-				"valid": true,
-				"skip": "could not compile schema"
+				"valid": true
 			},
 			{
 				"description": "no redirects to then and fails",
 				"data": "no",
-				"valid": false,
-				"skip": "could not compile schema"
+				"valid": false
 			},
 			{
 				"description": "invalid redirects to else and fails",
 				"data": "invalid",
-				"valid": false,
-				"skip": "could not compile schema"
+				"valid": false
 			}
 		]
 	}

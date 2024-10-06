@@ -134,6 +134,9 @@ func matchPattern(ctx *OpContext, pattern Value, f Feature) bool {
 // This is an optimization an intended to be faster than regular CUE evaluation
 // for the majority of cases where pattern constraints are used.
 func matchPatternValue(ctx *OpContext, pattern Value, f Feature, label Value) (result bool) {
+	if v, ok := pattern.(*Vertex); ok {
+		v.unify(ctx, scalarKnown, finalize)
+	}
 	pattern = Unwrap(pattern)
 	label = Unwrap(label)
 
@@ -159,7 +162,8 @@ func matchPatternValue(ctx *OpContext, pattern Value, f Feature, label Value) (r
 				addPositions(err, c)
 			}
 			ctx.AddBottom(&Bottom{
-				Err: err,
+				Err:  err,
+				Node: ctx.vertex,
 			})
 		}
 		if ctx.errs == nil {
