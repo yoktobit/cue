@@ -160,6 +160,8 @@ func cABIFunc(i *instance, name string, sig []cue.Value) func(*pkg.CallCtxt) {
 				args = append(args, encBool(c.Bool(k)))
 			case cue.IntKind, cue.FloatKind, cue.NumberKind:
 				args = append(args, encNumber(typ, c.Value(k)))
+			case cue.StringKind:
+				args = append(args, uint64(encBytes(i, []byte(c.String(k))).ptr))
 			case cue.StructKind:
 				ms := encodeStruct(i, c.Value(k), argLayouts[k])
 				defer i.FreeAll(ms)
@@ -171,7 +173,7 @@ func cABIFunc(i *instance, name string, sig []cue.Value) func(*pkg.CallCtxt) {
 		}
 
 		var retMem *memory
-		if resTyp.IncompleteKind() == cue.StructKind {
+		if resTyp.IncompleteKind() == cue.StructKind || resTyp.IncompleteKind() == cue.StringKind {
 			retMem, _ = i.Alloc(uint32(retLayout.size))
 			// TODO: add support for structs containing pointers.
 			defer i.Free(retMem)
@@ -189,6 +191,8 @@ func cABIFunc(i *instance, name string, sig []cue.Value) func(*pkg.CallCtxt) {
 				c.Ret = decBool(res[0])
 			case cue.IntKind, cue.FloatKind, cue.NumberKind:
 				c.Ret = decNumber(resTyp, res[0])
+			case cue.StringKind:
+				c.Ret = string(retMem.Bytes())
 			case cue.StructKind:
 				c.Ret = decodeStruct(retMem.Bytes(), retLayout)
 			default:

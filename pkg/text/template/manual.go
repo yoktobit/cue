@@ -15,15 +15,35 @@
 package template
 
 import (
+	"maps"
 	"strings"
 	"text/template"
 
 	"cuelang.org/go/cue"
+	"github.com/Masterminds/sprig/v3"
 )
 
 // Execute executes a Go-style template.
 func Execute(templ string, data cue.Value) (string, error) {
-	t, err := template.New("").Parse(templ)
+	myFuncs := template.FuncMap{
+		"trim": func(s string) string {
+			return strings.TrimSpace(s)
+		},
+		"remove_newline": func(s string) string {
+			return strings.Replace(s, "\n", "", -1)
+		},
+		"lower_case": func(s string) string {
+			return strings.ToLower(s)
+		},
+		// "stammdaten_id": func(s string) string {
+		// 	return harmonizedStammdatenId(s)
+		// },
+		"deref": func(s *int) int {
+			return *s
+		},
+	}
+	maps.Copy(myFuncs, sprig.FuncMap())
+	t, err := template.New("").Funcs(myFuncs).Parse(templ)
 	if err != nil {
 		return "", err
 	}

@@ -32,6 +32,7 @@ import (
 	"cuelang.org/go/cue/build"
 	"cuelang.org/go/cue/cuecontext"
 	"cuelang.org/go/cue/errors"
+	"cuelang.org/go/cue/interpreter/embed"
 	"cuelang.org/go/cue/token"
 	"cuelang.org/go/internal/encoding"
 	"cuelang.org/go/mod/module"
@@ -464,7 +465,7 @@ func newFileCache(c *Config) *fileCache {
 			// always to pass a non-nil source when the file is "-".
 			ParseFile: c.ParseFile,
 		},
-		ctx:     cuecontext.New(),
+		ctx:     cuecontext.New(cuecontext.Interpreter(embed.New())),
 		entries: make(map[string]fileCacheEntry),
 	}
 }
