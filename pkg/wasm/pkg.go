@@ -16,36 +16,36 @@ var _ = adt.TopKind // in case the adt package isn't used
 var p = &pkg.Package{
 	Native: []*pkg.Builtin{
 		{
-			Name: "TransformStringByFile",
+			Name: "TransformValueByFile",
 			Params: []pkg.Param{
 				{Kind: adt.StringKind},
 				{Kind: adt.StringKind},
-				{Kind: adt.StringKind},
+				{Kind: adt.TopKind},
 			},
-			Result: adt.StringKind,
+			Result: adt.TopKind,
 			Func: func(c *pkg.CallCtxt) {
 				wasmFile := c.String(0)
 				function := c.String(1)
-				s := c.String(2)
+				v := c.Value(2)
 				if c.Do() {
-					c.Ret, c.Err = ExecuteFile(wasmFile, function, s)
+					c.Ret, c.Err = TransformValueByFile(wasmFile, function, v)
 				}
 			},
 		},
 		{
-			Name: "TransformStringByUrl",
+			Name: "TransformValueByUrl",
 			Params: []pkg.Param{
 				{Kind: adt.StringKind},
 				{Kind: adt.StringKind},
-				{Kind: adt.StringKind},
+				{Kind: adt.TopKind},
 			},
-			Result: adt.StringKind,
+			Result: adt.TopKind,
 			Func: func(c *pkg.CallCtxt) {
 				wasmFile := c.String(0)
 				function := c.String(1)
-				s := c.String(2)
+				v := c.Value(2)
 				if c.Do() {
-					c.Ret, c.Err = ExecuteUrl(wasmFile, function, s)
+					c.Ret, c.Err = TransformValueByUrl( wasmFile, function, v)
 				}
 			},
 		},
